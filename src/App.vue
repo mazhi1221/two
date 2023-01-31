@@ -10,7 +10,7 @@
           <span>工业生产过程管理</span>
         </el-menu-item>
         <el-menu-item index="4">
-          <span>异常检测告警记录</span>
+          <span>李雨健</span>
         </el-menu-item>
       </el-menu>
     </div>
