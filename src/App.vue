@@ -1,48 +1,51 @@
 <template>
-  <div class="app-wrapper">
-    <div class="leftNav">
-      <h6>异常检测平台</h6>
-      <el-menu default-active="2">
-        <el-menu-item index="2">
-          <span>工业生产过程可视化</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <span>工业生产过程管理</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <span>异常检测告警记录</span>
-        </el-menu-item>
-      </el-menu>
+  <div class="baseViews">
+    <div class="topViews">
+      <Header />
     </div>
-    <div class="rightView">
-      <RouterView />
+    <div class="bottomViews">
+      <div class="leftViews">
+        <menuCom :activeRoute="$route" />
+      </div>
+      <div class="rightViews">
+        <div class="routerBox" ref="wrapper">
+          <router-view />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-
-
+import Header from "/src/components/header/index.vue";
+import MenuCom from "/src/components/menuCom/index.vue";
 </script>
 <style lang="scss" scoped>
-div.app-wrapper {
-  width: 100vw;
-  height: 100vh;
-  div.leftNav {
-    height: 100%;
-    width: 250px;
-    float: left;
-    h6 {
-      width: 250px;
-      height: 60px;
-      line-height: 60px;
-      text-align: center;
-      font-size: 22px;
-    }
+div.baseViews {
+  width: 100%;
+  height: 100%;
+  div.topViews {
+    width: 100%;
+    height: 63px;
   }
-  div.rightView {
-    min-height: 100%;
-    margin-left: 250px;
-    position: relative;
+  div.bottomViews {
+    width: 100%;
+    height: calc(100% - 63px);
+    div.leftViews {
+      width: 256px;
+      height: 100%;
+      float: left;
+    }
+    div.rightViews {
+      width: calc(100% - 256px);
+      height: 100%;
+      float: left;
+      div.routerBox {
+        height: 100%;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 30px;
+      }
+    }
   }
 }
 </style>

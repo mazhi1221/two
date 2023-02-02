@@ -1,26 +1,51 @@
 <template>
   <div class="header">
-    <div class="contain">
-      ffffffffffffffffff
+    <div class="logoBox">
+      <div class="img">
+        <img src="../../assets/img/logo.png" alt="logo" />
+      </div>
+      <h2>禅</h2>
+    </div>
+    <div class="loginInfo">
+      <span>StephenLee</span>
     </div>
   </div>
 </template>
 <script setup>
-
 </script>
 <style lang="scss" scoped>
 div.header {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
-  font-size: 13px;
-  background: #444;
-  position: relative;
-  div.contain {
-    width: 100%;
-    min-width: 960px;
-    margin: 0 auto;
-    max-width: 1400px;
+  height: 100%;
+  padding: 0 22px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  div.logoBox {
+    display: flex;
+    align-items: center;
+    div.img {
+      width: 31px;
+      height: 31px;
+      margin-right: 12px;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  div.loginInfo {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #fff;
   }
 }
 </style>
