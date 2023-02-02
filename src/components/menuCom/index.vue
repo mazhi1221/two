@@ -6,13 +6,13 @@
           <el-icon><icon-menu /></el-icon>
           <span>设备信息</span>
         </el-menu-item>
-        <el-menu-item index="2" disabled>
+        <el-menu-item index="2">
           <el-icon><document /></el-icon>
-          <span>Navigator Three</span>
+          <span>设备信息</span>
         </el-menu-item>
         <el-menu-item index="3">
           <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
+          <span>设备信息</span>
         </el-menu-item>
       </el-menu>
     </div>
