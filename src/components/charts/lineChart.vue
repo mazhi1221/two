@@ -69,16 +69,11 @@ export default {
                     },
                 },
                 grid: {
-                    left: 40,
-                    right: 40,
-                    bottom: 40,
+                    left: 0,
+                    right: 20,
+                    bottom: 0,
                     top: 40,
                     containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
                 },
                 xAxis: {
                     type: 'category',

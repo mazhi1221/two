@@ -4,7 +4,7 @@
             <div class="img">
                 <img src="../../assets/img/logo.png" alt="logo" />
             </div>
-            <h2>禅</h2>
+            <h2>智慧运行系统</h2>
         </div>
         <div class="loginInfo">
             <el-switch 
@@ -52,7 +52,6 @@ div.header {
 
         h2 {
             font-size: 20px;
-            color: #fff;
             font-weight: normal;
         }
     }
@@ -60,7 +59,6 @@ div.header {
         display: flex;
         align-items: center;
         font-size: 16px;
-        color: #fff;
     }
 }
 </style>
