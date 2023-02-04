@@ -21,10 +21,11 @@
 import { useDark } from '@vueuse/core'
 import { Sunny, Moon } from '@element-plus/icons-vue'
 
-const isDark = useDark({
-    valueDark: 'dark',
-    valueLight: 'light',
-})
+//html元素标签类名为 dark 或 空
+//el-theme-appearance = auto, 随系统模式切换
+//el-theme-appearance = light, 不随系统模式切换，为白天模式
+
+const isDark = useDark()
 
 </script>
 <style lang="scss" scoped>
