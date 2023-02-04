@@ -8,11 +8,11 @@
         </div>
         <div class="loginInfo">
             <el-switch 
-                v-model="isDark"
+                v-model="theme"
                 inline-prompt
                 :active-icon="Moon"
                 :inactive-icon="Sunny"
-                style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+                style="--el-switch-on-color: #ff0000; --el-switch-off-color: #409eff"
             />
         </div>
     </div>
@@ -25,7 +25,7 @@ import { Sunny, Moon } from '@element-plus/icons-vue'
 //el-theme-appearance = auto, 随系统模式切换
 //el-theme-appearance = light, 不随系统模式切换，为白天模式
 
-const isDark = useDark()
+const theme = useDark()
 
 </script>
 <style lang="scss" scoped>
