@@ -23,7 +23,7 @@
 
 /* semantic color variables for this project */
 :root {
-  /* --color-background: var(--vt-c-white);
+  --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
@@ -33,36 +33,31 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
-  --section-gap: 160px; */
+  --section-gap: 160px;
+}
+
+/*
+用户控制的样式，
+当系统是亮色模式时，切换按钮是正常的，但是系统是深色模式时，切换按钮是无法切换样式的，一直是深色模式
+原因：@media (prefers-color-scheme: dark)这块在系统为深色模式的时候，一直占据着应用样式，所以不论html中是否有.dark，都一直展示深色模式
+原因：因为useDark已经对系统主题切换做了检测了，所以我们自己再加上@media就重复控制了，就导致系统主题为深色的时候我们无法用按钮控制主题，所以把@media那段控制去掉即可
+解决办法：去掉@media (prefers-color-scheme: dark)这段深色模式样式去掉即可 https://juejin.cn/post/7098547719232290852#heading-11
+*/
+:root.dark {
+  --color-background: var(--vt-c-black);
+  --color-background-soft: var(--vt-c-black-soft);
+  --color-background-mute: var(--vt-c-black-mute);
+
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
 }
 
 /* prefers-color-scheme 属性能帮助我们检测设备的深色模式开启情况。 */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
-    /* --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2); */
-  }
-}
-/* html.light {
-    --color-background: var(--vt-c-white);
-    --color-background-soft: var(--vt-c-white-soft);
-    --color-background-mute: var(--vt-c-white-mute);
-
-    --color-border: var(--vt-c-divider-light-2);
-    --color-border-hover: var(--vt-c-divider-light-1);
-
-    --color-heading: var(--vt-c-text-light-1);
-    --color-text: var(--vt-c-text-light-1);
-} */
-
-html.dark {
     --color-background: var(--vt-c-black);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
@@ -72,15 +67,19 @@ html.dark {
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
-}
+  }
+} */
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
   position: relative;
   font-weight: normal;
+  list-style: none;
+  text-decoration: none;
 }
 
 body {

@@ -15,6 +15,11 @@ app.use(ElementPlus, {
   locale: zhCn,
 });
 
+//引入axios
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+createApp(App).use(VueAxios, axios);
+
 //定义一个应用级的错误处理器，它将捕获所有由子组件上抛而未被处理的错误：
 app.config.errorHandler = (err) => {
   alert(err);

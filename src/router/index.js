@@ -5,17 +5,22 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/deviceManagement'
+      redirect: '/home'
     },
     {
-      path: '/',
-      name: 'deviceManagement',
-      component: () => import('/src/views/deviceManagement/index.vue'),
+      path: '/home',
+      name: 'home',
+      component: () => import('/src/views/home/index.vue'),
     },
     {
-      path: '/deviceManagement',
-      name: 'deviceManagement',
-      component: () => import('/src/views/deviceManagement/index.vue'),
+      path: '/drawerHome',
+      name: 'drawerHome',
+      component: () => import('/src/views/drawerHome/index.vue'),
+    },
+    {
+      path: '/drawerTool',
+      name: 'drawerTool',
+      component: () => import('/src/views/drawerTool/index.vue'),
     },
   ]
 })
