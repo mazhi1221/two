@@ -4,7 +4,7 @@
       :model-value="dialogVisible"
       title="欢迎您登录"
       width="30%"
-      :before-close="handleClose"
+      :before-close="handleCloseDialog"
     >
       <el-form
         ref="loginFormRef"
@@ -14,10 +14,10 @@
         :rules="rules"
         style="max-width: 460px"
       >
-        <el-form-item label="用户名">
+        <el-form-item label="用户名" prop="username">
           <el-input v-model="loginForm.username" />
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
           <el-input v-model="loginForm.password" />
         </el-form-item>
       </el-form>
@@ -25,7 +25,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleLogin(loginFormRef)">登录</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
+          <el-button type="primary" @click="handleCloseDialog">
             取消
           </el-button>
         </span>
@@ -38,16 +38,14 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
 import { login } from '@/api/login.js'
 import { reactive, ref } from 'vue'
 
-const props = defineProps({
-  dialogVisible: Boolean
-})
+//定义组件属性
+const props = defineProps({ dialogVisible: Boolean})
+const emit = defineEmits(['handleCloseDialog'])
 const loginFormRef = ref()
-
 const loginForm = reactive({
-  username: '',
-  password: ''
+  username: '15911064450',
+  password: 'abcd1234'
 })
-
 const rules = reactive({
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
@@ -66,19 +64,24 @@ const encrypt = (txt) => {
 const handleLogin = (loginFormRef) => {
   loginFormRef.validate((valid, fields) => {
     if (valid) {
+      const { username, password } = loginForm;
       const params = {
-        ...loginForm.value,
-        password: encrypt(loginForm.value.password)
+        username,
+        password: encrypt(password)
       }
       login(params).then((res) => {
-        const { token, user } = res
+        handleCloseDialog();
+        const { token, user } = res;
         // this.$store.commit('setUser', 'Bearer ' + token)
       })
     }
   })
 }
 
-const handleClose = () => {}
+const handleCloseDialog = () => {
+  emit("handleCloseDialog")
+}
+
 </script>
 <style lang="scss" scoped>
 </style>

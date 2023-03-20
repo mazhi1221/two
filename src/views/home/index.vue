@@ -11,7 +11,7 @@
           <div>更多</div>
         </div>
         <div class="right">
-          <div class="loginBtn" @click="dialogVisible = true">登陆</div>
+          <div class="loginBtn" @click="loginBtnClick">登陆</div>
           <div class="registerBtn">注册</div>
           <el-dropdown>
             <span class="el-dropdown-link">
@@ -85,27 +85,27 @@
         </div>
       </div>
     </div>
-    <login :dialogVisible="dialogVisible"/>
+    <login 
+      :dialogVisible="dialogVisible"
+      @handleCloseDialog="dialogVisible = false;"
+    />
   </div>
 </template>
 <script setup>
 import { ArrowDown } from '@element-plus/icons-vue';
-import { loginOut } from "@/api/login.js";
-import login from './components/login.vue';
-import { reactive, ref } from 'vue';
-
+import { ref } from 'vue';
+import Login from "./components/login.vue";
 const dialogVisible = ref(false);
-
-//退出登录
-const handleLoginOut = () => {
-  loginOut().then(res => {
-    console.log(res);
-  })
+const loginBtnClick = () => {
+  dialogVisible.value = true;
 }
 
 </script>
 <style lang="scss" scoped>
 div.home {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
   div.nav {
     width: 100%;
     height: 107px;
