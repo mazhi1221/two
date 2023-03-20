@@ -1,27 +1,36 @@
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
+import { getItem } from "@/utils/storage";
 
-let http = axios.create({
+let service = axios.create({
   baseURL: '/api',
   timeout: 1000 * 60 * 40
 });
+axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 // 数据请求拦截
-http.interceptors.request.use((config) => {
+service.interceptors.request.use((config) => {
+  const { url, method } = config;
+  //避免接口走缓冲数据
+  if(method === "get") {
+    url.indexOf('?') === -1 ? config.url = url+'?t='+(new Date().getTime()) : config.url = url+'&t='+(new Date().getTime())
+  }
+  config.headers.Authorization = getItem("authorization") || "";
   return config;
 }, (error) => {
   return Promise.reject(error);
 });
 
 // 返回响应数据拦截
-http.interceptors.response.use((res) => {
-  const data = res.data;
-  // 状态码为 2xx 范围时都会调用该函数，处理响应数据
-  if (res.status === 200) {
-    const code = data.code;
+service.interceptors.response.use((res) => {
+  const { status, data } = res;
+  if (status === 200) {
     return Promise.resolve(data);
   }
 }, (error) => {
+
+  console.log(error)
+
   if (error.response.status) {
     // 状态码超过 2xx 范围时都会调用该函数，处理错误响应
     switch (error.response.status) {
@@ -46,4 +55,4 @@ http.interceptors.response.use((res) => {
   return Promise.reject(error);
 });
 
-export default http;
+export default service;
