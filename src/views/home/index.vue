@@ -239,7 +239,11 @@ div.home {
           font-size: 16px;
           margin-right: 30px;
           color: #fff;
+          opacity: 1;
           cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
         }
       }
 
