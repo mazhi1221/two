@@ -35,13 +35,13 @@
 </template>
 <script setup>
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
-import { useUserStore } from "@/store/user"
-import { login } from '@/api/login.js'
+// import { useUserStore } from "@/store/user"
+import { login } from '@/api/home.js'
 import { reactive, ref } from 'vue'
 
 //状态管理
-const user = useUserStore();
-const { token, setUser } = storeToRefs(user)
+// const user = useUserStore();
+// const { token, setUser } = storeToRefs(user)
 
 //定义组件属性
 const props = defineProps({ dialogVisible: Boolean})
