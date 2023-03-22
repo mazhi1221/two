@@ -81,9 +81,6 @@ onMounted(async () => {
   console.log(a);
 })
 
-
-
-
 </script>
 <style lang="scss" scoped>
 div.drawerHome {

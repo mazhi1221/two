@@ -28,6 +28,6 @@ export const getSmsCode = (data) =>
 export const getTemplate = (data) =>
   request({
     method: "post",
-    url: "/api/doc/template",
+    url: "/doc/template",
     data,
   });
