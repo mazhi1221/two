@@ -21,7 +21,6 @@
           <el-input v-model="loginForm.password" />
         </el-form-item>
       </el-form>
-
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleLogin(loginFormRef)">登录</el-button>
@@ -34,10 +33,11 @@
   </div>
 </template>
 <script setup>
-import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt.min';
+import { reactive, ref } from 'vue';
+import { login } from '../../../api/home';
+import { ElMessage } from 'element-plus'
 // import { useUserStore } from "@/store/user"
-import { login } from '@/api/home.js'
-import { reactive, ref } from 'vue'
 
 //状态管理
 // const user = useUserStore();
@@ -57,8 +57,7 @@ const rules = reactive({
 })
 
 // 登录密码加密
-const publicKey =
-  'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuM81gEYgChoIKH3fXbvq6K0IlX7Efi6OHQBjyX9ZylSLCC06HyP+Q9gEt3Xd4TrlFfQ7alijYw2CA8mCOA14GFDJa2Gctk8xMTb/ffoaxRiwEjUI9pOFpjTnn/lfIDhGhCOMLdmvVOaO9ym7voun4qnEv8fA6JtdDSOMxrTv5ODvzMnhsW2Z7Ljf0RKBUjeo0cPTwY2xvrXqycJQB7UL9RqbROrAP7NIfOJU0a9jw2y/tUBsPATTRXK7EFFDcRbjQKwX8LF+jUt/SL5x60dk69ZN8D0ni7/gUg6ZlRzTvoIZFTrOzuxHPwrtgpFsw6AcWJZxea1nF/RR0IYgAtUuLQIDAQAB'
+const publicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuM81gEYgChoIKH3fXbvq6K0IlX7Efi6OHQBjyX9ZylSLCC06HyP+Q9gEt3Xd4TrlFfQ7alijYw2CA8mCOA14GFDJa2Gctk8xMTb/ffoaxRiwEjUI9pOFpjTnn/lfIDhGhCOMLdmvVOaO9ym7voun4qnEv8fA6JtdDSOMxrTv5ODvzMnhsW2Z7Ljf0RKBUjeo0cPTwY2xvrXqycJQB7UL9RqbROrAP7NIfOJU0a9jw2y/tUBsPATTRXK7EFFDcRbjQKwX8LF+jUt/SL5x60dk69ZN8D0ni7/gUg6ZlRzTvoIZFTrOzuxHPwrtgpFsw6AcWJZxea1nF/RR0IYgAtUuLQIDAQAB'
 const encrypt = (txt) => {
   const encryptor = new JSEncrypt()
   encryptor.setPublicKey(publicKey) // 设置公钥
@@ -75,6 +74,10 @@ const handleLogin = (loginFormRef) => {
         password: encrypt(password)
       }
       login(params).then((res) => {
+        ElMessage({
+          message: '登陆成功！',
+          type: 'success',
+        })
         handleCloseDialog();
         const { token, user } = res;
         // this.$store.commit('setUser', 'Bearer ' + token)

@@ -1,5 +1,21 @@
 import request from '../utils/https';
 
+//标签(发现和推荐)
+export const getTag = (data) =>
+  request({
+    method: "get",
+    url: "/api/tag",
+    data,
+  });
+
+//发现和推荐
+export const getTemplate = (data) =>
+  request({
+    method: "get",
+    url: "/api/doc/template",
+    data,
+  });
+
 //登录
 export const login = (data) =>
   request({
@@ -24,10 +40,4 @@ export const getSmsCode = (data) =>
     data,
   });
 
-//发现和推荐
-export const getTemplate = (data) =>
-  request({
-    method: "post",
-    url: "/doc/template",
-    data,
-  });
+

@@ -3,7 +3,6 @@ import { ElMessage } from 'element-plus';
 import { getItem } from "@/utils/storage";
 
 let service = axios.create({
-  baseURL: '/api',
   timeout: 1000 * 60 * 40
 });
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'

@@ -124,6 +124,14 @@
         <div class="titleBar">
           <span>AIGC设计和创造</span>
         </div>
+        <ul>
+          <li v-for="(item, index) in recommendedContent">
+            <img src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/userLogo.jpeg" alt="">
+          </li>
+          <li v-for="(item, index) in recommendedContent">
+            <img src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/userLogo.jpeg" alt="">
+          </li>
+        </ul>
       </div>
     </div>
     <footer>
@@ -174,20 +182,27 @@
 </template>
 <script setup>
 import Login from "./components/login.vue";
-import { getTemplate } from '../../api/home'
 import { ArrowDown } from '@element-plus/icons-vue';
 import { ref, onMounted } from 'vue';
 import { useRouter , useRoute } from 'vue-router'
+import { getTag, getTemplate } from '../../api/home'
 
 const dialogVisible = ref(false);
 const loginBtnClick = () => {
   dialogVisible.value = true;
 }
 
+const tags = ref([]);
+const getTags = () => {
+  getTag().then(res => {
+    tags.value = res;
+  })
+}
+
 const recommendedContent = ref([]);
 const getRecommendedContent = () => {
   getTemplate().then(res => {
-    console.log(res);
+    recommendedContent.value = res;
   })
 }
 
@@ -417,11 +432,32 @@ div.home {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 42px;
         span {
           font-size: 30px;
           font-weight: 500;
           line-height: 35px;
           color: #080707;
+        }
+      }
+      ul {
+        overflow: hidden;
+        li {
+          width: 230px;
+          height: 330px;
+          border-radius: 10px;
+          margin-right: 100px;
+          float: left;
+          &:nth-child(4) {
+            margin-right: 0;
+          }
+          &:nth-child(-n + 4) {
+            margin-bottom: 64px;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
