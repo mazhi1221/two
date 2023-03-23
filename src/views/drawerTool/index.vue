@@ -15,26 +15,47 @@
     <div class="content">
       <div class="catalogArea">
         <el-tabs v-model="activeName">
-          <el-tab-pane label="版本" name="版本">版本</el-tab-pane>
           <el-tab-pane label="目录" name="目录">
-            <ul id="header-container"></ul>
+            <ul id="header-container" v-if="catalog.length">
+              <li
+                v-for="(item, index) in catalog"
+                :type="item.type"
+                :id="item.id"
+                :key="item.id"
+                @click="scrollToElem(item.id)"
+              >
+                {{ item.text }}
+              </li>
+            </ul>
+          </el-tab-pane>
+          <el-tab-pane label="版本" name="版本">
+            <span>版本</span>
           </el-tab-pane>
         </el-tabs>
       </div>
       <div class="editorArea">
-        <div class="editorArea">
-          <Editor ref="editor" />
+        <div class="editorAreaContain">
+          <div class="editorDom">
+            <Editor ref="editor" />
+          </div>
+          <div class="wordCount">
+            <div>0字</div>
+            <div>
+              <span>当前内容已于{{"12:35"}}自动保存</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import Editor from "@/components/editor/index.vue";
+import Editor from "./components/editor.vue";
 import { ref, onMounted } from 'vue';
 
-const activeName = ref('版本');
-const category = ref(["需求方案", "生图", "表格", "流程", "原型", "思维导图", "UML"]);
+//初始化设置
+const activeName = ref('目录');
+const catalog = ref([]);
 
 
 </script>
@@ -104,13 +125,7 @@ div.drawerTool {
       border-right: 1px solid #dfe0e1;
       padding: 20px 30px;
       box-sizing: border-box;
-    }
-    >div.editorArea {
-      float: left;
-      width: calc(100% - 208px);
-      height: 100%;
-      background: #F7F8FC;
-      ul {
+      ul#header-container {
         width: 426px;
         height: 40px;
         margin: 14px auto;
@@ -124,9 +139,26 @@ div.drawerTool {
           }
         }
       }
-      div.editorArea {
-        height: calc(100% - 68px);
-        overflow: hidden;
+    }
+    >div.editorArea {
+      float: left;
+      width: calc(100% - 208px);
+      height: 100%;
+      div.editorAreaContain {
+        height: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        background: rgb(235, 236, 239);
+        div.editorDom {
+          height: calc(100% - 30px);
+        }
+        div.wordCount {
+          height: 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: #B9B5B5;
+        }
       }
     }
   }

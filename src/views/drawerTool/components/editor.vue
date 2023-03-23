@@ -1,30 +1,18 @@
 <template>
   <div class="wangEditorArea">
-    <div class="myCatalogArea">
-      <ul>
-        <li
-          v-for="(item, index) in catalog"
-          :type="item.type"
-          :id="item.id"
-          :key="item.id"
-          @click="scrollToElem(item.id)"
-        >
-          {{ item.text }}
-        </li>
-      </ul>
-    </div>
-    <div class="myEditor" style="border: 1px solid #ccc">
-      <Toolbar
-        class="toolbar"
-        style="border-bottom: 1px solid #ccc"
-        :editor="editorRef"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-      />
+    <Toolbar
+      class="toolbar_top"
+      :editor="editorRef"
+      :defaultConfig="toolbarConfig"
+      :mode="mode"
+    />
+    <div class="toolbar_bottom">
       <div class="editorContain">
+        <div id="title-container">
+          <input type="text" v-model="title">
+        </div>
         <Editor
-          style="height: 600px"
-          class="editor"
+          class="editor_bottom"
           v-model="valueHtml"
           :defaultConfig="editorConfig"
           :mode="mode"
@@ -41,8 +29,7 @@ import {onBeforeUnmount, onMounted, ref, shallowRef} from 'vue'
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {SlateNode} from "@wangeditor/editor"
 
-//目录
-const catalog = ref([]);
+const title = ref("华为 P60 系列 4488 元起，10+ 款鸿蒙新品一同到来")
 
 //工具栏配置相关
 const editorRef = shallowRef();
@@ -59,14 +46,14 @@ const handleCreated = (editor) => {
 }
 const handleChange = (editor) => {
   const headers = editor.getElemsByTypePrefix('header');
-  catalog.value = headers.map(header => {
+  const catalogValue = headers.map(header => {
     const text = SlateNode.string(header)
     const {id, type} = header
     return { id, type, text }
   })
 }
 const scrollToElem = (id) => {
-  editorRef.value.scrollToElem(id)
+  editorRef.value.scrollToElem(id);
 }
 
 //编辑器初始化内容回显
@@ -85,35 +72,40 @@ onBeforeUnmount(() => {
 </script>
 <style lang="scss">
 div.wangEditorArea {
-  >div.myCatalogArea {
-    float: left;
-    width: 200px;
-    height: 400px;
-  }
-  >div.myEditor {
-    float: left;
-    width: calc(100% - 200px);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    div.toolbar {
-      height: 69px;
-      background: #F7F8FC;
-      padding-top: 14px;
-      ::v-deep {
-        .w-e-toolbar {
-          margin: 0 auto;
-          background: #F7F8FC;
-        }
+  height: 100%;
+  overflow: hidden;
+  >div.toolbar_top {
+    border-bottom: 1px solid #ccc;
+    ::v-deep {
+      .w-e-toolbar {
+        margin: 0 auto;
+        background: #F7F8FC;
       }
     }
+  }
+  >div.toolbar_bottom {
+    height: calc(100% - 41px);
+    overflow-y: auto;
+    overflow-x: hidden;
     div.editorContain {
-      flex: 1;
-      background: #ebecef;
-      padding: 20px 56px 68px 19px;
-      div.editor {
-        overflow-y: hidden;
-        border-radius: 15px;
+      width: 850px;
+      margin: 30px auto 30px auto;
+      background-color: #fff;
+      padding: 20px 50px 50px 50px;
+      border: 1px solid #e8e8e8;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
+      div#title-container {
+        padding: 20px 0;
+        border-bottom: 1px solid #e8e8e8;
+        input {
+          font-size: 30px;
+          border: 0;
+          outline: none;
+          width: 100%;
+        }
+      }
+      div.editor_bottom {
+        min-height: 900px;
       }
     }
   }
