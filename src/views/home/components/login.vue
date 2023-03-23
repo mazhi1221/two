@@ -34,7 +34,7 @@
 </template>
 <script setup>
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min';
-import { reactive, ref } from 'vue';
+import { reactive, ref, defineEmits, defineProps } from 'vue';
 import { login } from '../../../api/home';
 import { ElMessage } from 'element-plus'
 // import { useUserStore } from "@/store/user"

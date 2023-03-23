@@ -22,13 +22,8 @@
         </el-tabs>
       </div>
       <div class="editorArea">
-        <ul>
-          <li v-for="item in category">
-            <span>{{ item }}</span>
-          </li>
-        </ul>
         <div class="editorArea">
-          <Editor ref="editor" @handleChange="handleChange"/>
+          <Editor ref="editor" />
         </div>
       </div>
     </div>
@@ -40,31 +35,6 @@ import { ref, onMounted } from 'vue';
 
 const activeName = ref('版本');
 const category = ref(["需求方案", "生图", "表格", "流程", "原型", "思维导图", "UML"]);
-const editor = ref();
-
-onMounted(() => {
-  // 标题 DOM 容器
-  const headerContainer = document.getElementById('header-container')
-  headerContainer.addEventListener('mousedown', event => {
-    if (event.target.tagName !== 'LI') return
-    event.preventDefault()
-    const id = event.target.id
-    // editor.scrollToElem(id) // 滚动到标题
-
-    editor.editorRef.scrollToElem(id)
-
-
-  })
-})
-
-const handleChange = (innerHtml) => {
-  const headerContainer = document.getElementById('header-container')
-  headerContainer.innerHTML = innerHtml;
-}
-
-
-
-
 
 
 </script>
