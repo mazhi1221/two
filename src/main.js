@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 
 import './assets/main.css'
-import 'element-plus/theme-chalk/dark/css-vars.css'
+import 'element-plus/theme-chalk/dark/css-vars.css' //element暗黑模式
+import './assets/styles/dark/css-vars.css' //element自定义暗黑模式（覆盖默认暗黑模式）
 
 const app = createApp(App)
 
