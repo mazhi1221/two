@@ -21,6 +21,10 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 app.use(VueAxios, axios);
 
+//引入瀑布流插件
+import { VueMasonryPlugin } from 'vue-masonry';
+app.use(VueMasonryPlugin);
+
 //定义一个应用级的错误处理器，它将捕获所有由子组件上抛而未被处理的错误：
 app.config.errorHandler = (err) => {
   alert(err);

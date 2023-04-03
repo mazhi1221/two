@@ -22,7 +22,7 @@
 
       </div>
       <div class="imgFlow">
-
+        <masonry-image />
       </div>
     </div>
     <login
@@ -33,6 +33,7 @@
 </template>
 <script setup>
 import Login from "./components/login.vue";
+import MasonryImage from "@/components/masonryImage/index.vue";
 import { ref, onMounted } from 'vue';
 
 let dialogVisible = ref(false);
