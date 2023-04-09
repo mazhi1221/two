@@ -1,0 +1,121 @@
+{
+  "id": "4004928",
+  "name": "帮写绘",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10571075",
+      "name": "sharpicons_stylus",
+      "font_class": "sharpicons_stylus",
+      "unicode": "e7dd",
+      "unicode_decimal": 59357
+    },
+    {
+      "icon_id": "10571077",
+      "name": "sharpicons_vector-shape-2",
+      "font_class": "sharpicons_vector-shape-",
+      "unicode": "e7de",
+      "unicode_decimal": 59358
+    },
+    {
+      "icon_id": "10571080",
+      "name": "sharpicons_vector-shape",
+      "font_class": "sharpicons_vector-shape",
+      "unicode": "e7df",
+      "unicode_decimal": 59359
+    },
+    {
+      "icon_id": "10571084",
+      "name": "sharpicons_vector-shape-pen",
+      "font_class": "sharpicons_vector-shape-pen",
+      "unicode": "e7e0",
+      "unicode_decimal": 59360
+    },
+    {
+      "icon_id": "10571086",
+      "name": "sharpicons_brush",
+      "font_class": "sharpicons_brush",
+      "unicode": "e7e1",
+      "unicode_decimal": 59361
+    },
+    {
+      "icon_id": "10571091",
+      "name": "sharpicons_crop",
+      "font_class": "sharpicons_crop",
+      "unicode": "e7e2",
+      "unicode_decimal": 59362
+    },
+    {
+      "icon_id": "10571096",
+      "name": "sharpicons_files",
+      "font_class": "sharpicons_files",
+      "unicode": "e7e3",
+      "unicode_decimal": 59363
+    },
+    {
+      "icon_id": "10571097",
+      "name": "sharpicons_line-shape",
+      "font_class": "sharpicons_line-shape",
+      "unicode": "e7e4",
+      "unicode_decimal": 59364
+    },
+    {
+      "icon_id": "10571098",
+      "name": "sharpicons_brush-2",
+      "font_class": "sharpicons_brush-",
+      "unicode": "e7e5",
+      "unicode_decimal": 59365
+    },
+    {
+      "icon_id": "10571100",
+      "name": "sharpicons_paintboard",
+      "font_class": "sharpicons_paintboard",
+      "unicode": "e7e6",
+      "unicode_decimal": 59366
+    },
+    {
+      "icon_id": "10571101",
+      "name": "sharpicons_eyedropper",
+      "font_class": "sharpicons_eyedropper",
+      "unicode": "e7e7",
+      "unicode_decimal": 59367
+    },
+    {
+      "icon_id": "10571102",
+      "name": "sharpicons_pencil",
+      "font_class": "sharpicons_pencil",
+      "unicode": "e7e8",
+      "unicode_decimal": 59368
+    },
+    {
+      "icon_id": "10571104",
+      "name": "sharpicons_pen",
+      "font_class": "sharpicons_pen",
+      "unicode": "e7e9",
+      "unicode_decimal": 59369
+    },
+    {
+      "icon_id": "10571105",
+      "name": "sharpicons_marker",
+      "font_class": "sharpicons_marker",
+      "unicode": "e7ea",
+      "unicode_decimal": 59370
+    },
+    {
+      "icon_id": "10571106",
+      "name": "sharpicons_paintbrush",
+      "font_class": "sharpicons_paintbrush",
+      "unicode": "e7eb",
+      "unicode_decimal": 59371
+    },
+    {
+      "icon_id": "10571107",
+      "name": "sharpicons_knife",
+      "font_class": "sharpicons_knife",
+      "unicode": "e7ec",
+      "unicode_decimal": 59372
+    }
+  ]
+}

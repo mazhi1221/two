@@ -17,11 +17,6 @@ const router = createRouter({
       name: 'drawerHome',
       component: () => import('/src/views/drawerHome/index.vue'),
     },
-    {
-      path: '/drawerTool',
-      name: 'drawerTool',
-      component: () => import('/src/views/drawerTool/index.vue'),
-    },
   ]
 })
 

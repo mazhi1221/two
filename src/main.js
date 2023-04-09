@@ -16,6 +16,10 @@ app.use(ElementPlus, {
   locale: zhCn,
 });
 
+//引入状态管理器
+import { createPinia } from 'pinia'
+app.use(createPinia());
+
 //引入axios
 import axios from 'axios'
 import VueAxios from 'vue-axios'

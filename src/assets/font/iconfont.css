@@ -1,0 +1,79 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4004928 */
+  src: url('iconfont.woff2?t=1681054323432') format('woff2'),
+       url('iconfont.woff?t=1681054323432') format('woff'),
+       url('iconfont.ttf?t=1681054323432') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sharpicons_stylus:before {
+  content: "\e7dd";
+}
+
+.icon-sharpicons_vector-shape-:before {
+  content: "\e7de";
+}
+
+.icon-sharpicons_vector-shape:before {
+  content: "\e7df";
+}
+
+.icon-sharpicons_vector-shape-pen:before {
+  content: "\e7e0";
+}
+
+.icon-sharpicons_brush:before {
+  content: "\e7e1";
+}
+
+.icon-sharpicons_crop:before {
+  content: "\e7e2";
+}
+
+.icon-sharpicons_files:before {
+  content: "\e7e3";
+}
+
+.icon-sharpicons_line-shape:before {
+  content: "\e7e4";
+}
+
+.icon-sharpicons_brush-:before {
+  content: "\e7e5";
+}
+
+.icon-sharpicons_paintboard:before {
+  content: "\e7e6";
+}
+
+.icon-sharpicons_eyedropper:before {
+  content: "\e7e7";
+}
+
+.icon-sharpicons_pencil:before {
+  content: "\e7e8";
+}
+
+.icon-sharpicons_pen:before {
+  content: "\e7e9";
+}
+
+.icon-sharpicons_marker:before {
+  content: "\e7ea";
+}
+
+.icon-sharpicons_paintbrush:before {
+  content: "\e7eb";
+}
+
+.icon-sharpicons_knife:before {
+  content: "\e7ec";
+}
+

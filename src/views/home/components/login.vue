@@ -2,32 +2,36 @@
   <div class="login">
     <el-dialog
       :model-value="dialogVisible"
-      title="欢迎您登录"
       width="30%"
       :before-close="handleCloseDialog"
     >
+      <template #header>
+        <img src="../../../assets/img/login_logo.png" alt="">
+      </template>
       <el-form
         ref="loginFormRef"
-        label-position="top"
         label-width="100px"
         :model="loginForm"
         :rules="rules"
         style="max-width: 460px"
       >
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="loginForm.username" />
+        <el-form-item label="" prop="username">
+          <el-input v-model="loginForm.username" placeholder="手机号"/>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="loginForm.password" />
+        <el-form-item label="" prop="password">
+          <el-input v-model="loginForm.password" placeholder="密码"/>
         </el-form-item>
       </el-form>
       <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="handleLogin(loginFormRef)">登录</el-button>
-          <el-button type="primary" @click="handleCloseDialog">
-            取消
-          </el-button>
-        </span>
+        <div class="dialog-footer">
+          <div class="weChatLogin" @click="handleCloseDialog">
+            <img src="../../../assets/img/WechatIMG62.png" alt="">
+            <span>微信登陆</span>
+          </div>
+          <div class="login" @click="handleLogin(loginFormRef)">
+            登陆
+          </div>
+        </div>
       </template>
     </el-dialog>
   </div>
@@ -35,13 +39,15 @@
 <script setup>
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min';
 import { reactive, ref, defineEmits, defineProps } from 'vue';
-import { login } from '../../../api/home';
 import { ElMessage } from 'element-plus'
-// import { useUserStore } from "@/store/user"
+import { login } from '../../../api/home';
+import { useUserStore } from "../../../stores/user"
+import { storeToRefs } from 'pinia'
+import { setItem } from "@/utils/storage";
 
 //状态管理
-// const user = useUserStore();
-// const { token, setUser } = storeToRefs(user)
+const user = useUserStore();
+// const { token } = storeToRefs(user);
 
 //定义组件属性
 const props = defineProps({ dialogVisible: Boolean})
@@ -79,8 +85,8 @@ const handleLogin = (loginFormRef) => {
           type: 'success',
         })
         handleCloseDialog();
-        const { token, user } = res;
-        // this.$store.commit('setUser', 'Bearer ' + token)
+        const { token } = res;
+        setItem("authorization", 'Bearer ' + token)
       })
     }
   })
@@ -92,4 +98,73 @@ const handleCloseDialog = () => {
 
 </script>
 <style lang="scss" scoped>
+div.login {
+  ::v-deep {
+    .el-dialog {
+      width: 460px;
+      height: 311px;
+      border-radius: 20px;
+      background: #363535;
+      .el-dialog__header {
+        margin-right: 0;
+        padding: 40px 110px 10px;
+        box-sizing: border-box;
+        img {
+          width: 155px;
+          height: 20px;
+          display: block;
+          margin: 0 auto;
+        }
+      }
+      .el-dialog__body {
+        padding: 0;
+        .el-form-item {
+          width: 372px;
+          margin: 25px auto !important;
+          .el-form-item__content {
+            margin-left: 0 !important;
+            .el-input {
+              width: 100%;
+              height: 44px;
+              .el-input__wrapper {
+                border-radius: 20px;
+                padding: 1px 20px;
+              }
+            }
+          }
+        }
+      }
+      .el-dialog__footer {
+        padding: 0;
+        div.dialog-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 44px;
+          >div {
+            width: 183px;
+            height: 48px;
+            line-height: 48px;
+            text-align: center;
+            border-radius: 20px;
+            cursor: pointer;
+            img {
+              width: 20px;
+              height: 16px;
+              margin-right: 20px;
+              vertical-align: middle;
+            }
+            &.weChatLogin {
+              background: #fff;
+            }
+            &.login {
+              background: #860AB8;
+              color: #ffffff;
+            };
+          }
+        }
+      }
+    }
+  }
+}
 </style>
