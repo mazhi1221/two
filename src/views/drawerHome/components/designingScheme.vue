@@ -18,7 +18,9 @@
       </div>
     </div>
     <div class="generatePicture">
+      <el-empty v-if="!imageBlocks.length" description="暂无生成图片" />
       <masonry-image
+        v-else
         :imageBlocks="imageBlocks"
         :imgStyle="imgStyle"
       />
@@ -27,45 +29,55 @@
 </template>
 <script setup>
 import MasonryImage from "@/components/masonryImage/index.vue";
+import { ElMessage } from 'element-plus'
 import { createStudioWorks } from "@/api/project";
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 
 //设计草图创作
+const prompt = ref("");
 const imgStyle = {
-  width: '207px',
+  width: '200px',
   'margin-right': '10px',
   'margin-bottom': '10px'
 }
-const prompt = ref("马斯克在中国打工");
 const imageBlocks = ref([]);
 const route = useRoute();
-const { id, name } = route.query;
+const { id } = route.query;
 const handleCreateStudioWorks = () => {
+  if (!prompt.value) {
+    ElMessage({
+      message: '描述信息不能为空.',
+      type: 'warning',
+    })
+    return;
+  }
   const params = {
     mainId: id,
     prompt: prompt.value,
     type: "DESIGN"
   }
   createStudioWorks(params).then(res => {
-    imageBlocks.value = res;
+    imageBlocks.value.push(...res);
   })
 }
 </script>
 <style lang="scss" scoped>
 div.designingScheme {
-  padding: 30px 20px 70px 90px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
   box-sizing: border-box;
   background: #292929;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   >div.currentPicture {
-    width: 545px;
+    float: left;
+    width: calc(100% - 891px);
+    height: 100%;
     margin-right: 30px;
     div.search {
+      width: 100%;
       height: 40px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       border-radius: 20px;
       background: #FFFFFF;
       position: relative;
@@ -77,7 +89,7 @@ div.designingScheme {
         left: 15px;
       }
       input {
-        width: 400px;
+        width: calc(100% - 40px - 94px);
         height: 40px;
         padding: 0 10px;
         outline-style: none;
@@ -105,9 +117,9 @@ div.designingScheme {
       }
     }
     div.imgBox {
-      width: 543px;
+      width: 100%;
       height: 640px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       border-radius: 20px;
       background: #8C8C8C;
       .el-image {
@@ -125,7 +137,13 @@ div.designingScheme {
     }
   }
   >div.generatePicture {
-    flex: 1;
+    float: left;
+    width: 861px;
+    height: 100%;
+    overflow-y: auto;
+    .el-empty {
+      height: 100%;
+    }
   }
 }
 </style>

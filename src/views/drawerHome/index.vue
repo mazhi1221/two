@@ -21,35 +21,32 @@
       </div>
     </div>
     <div class="content">
-      <div ref="leftMenuRef" :class="['leftMenu', {collapseMenu: !isCollapse}]">
-        <el-menu
-          default-active="1"
-          :collapse="isCollapse"
-        >
-          <el-menu-item
+      <div
+        :class="['leftMenu', {collapseMenu: !isCollapse}]"
+        @mouseenter="isCollapse = false"
+        @mouseleave="isCollapse = true"
+      >
+        <ul>
+          <li
             v-for="(item, index) in menuList"
-            :index="String(index + 1)"
-            :key="index + 1"
-            @click="handleClickMenu"
+            :key="index"
+            @click="handleClickMenu(index)"
+            :class="{ active: index === activeMenu }"
           >
-            <span slot="title">
-              <el-icon>
-                <i :class="['iconfont', item.icon]"></i>
-              </el-icon>
-              <span>
-                {{ item.name }}
-              </span>
+            <span>
+              <i :class="['iconfont', item.icon]"></i>
             </span>
-          </el-menu-item>
-        </el-menu>
+            <span class="name" v-if="!isCollapse">{{ item.name }}</span>
+          </li>
+        </ul>
       </div>
       <div class="rightContent">
-        <designing-scheme v-if="activeMenu === 1"/>
-        <reference-synthesis v-if="activeMenu === 2"/>
-        <line-drawing-generation v-if="activeMenu === 3"/>
-        <original-color v-if="activeMenu === 4"/>
-        <design-inspiration v-if="activeMenu === 5"/>
-        <sketch-design v-if="activeMenu === 6"/>
+        <designing-scheme v-if="activeMenu === 0"/>
+        <reference-synthesis v-if="activeMenu === 1"/>
+        <line-drawing-generation v-if="activeMenu === 2"/>
+        <original-color v-if="activeMenu === 3"/>
+        <design-inspiration v-if="activeMenu === 4"/>
+        <sketch-design v-if="activeMenu === 5"/>
       </div>
     </div>
   </div>
@@ -62,9 +59,8 @@ import OriginalColor  from './components/originalColor.vue'
 import DesignInspiration  from './components/designInspiration.vue'
 import SketchDesign  from './components/sketchDesign.vue'
 import { Sunny, Moon } from '@element-plus/icons-vue'
-import { useClickOutSide } from "@/utils/event"
 import { useRoute } from 'vue-router';
-import { ref, reactive, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const themeMode = ref(true)
 
@@ -73,8 +69,6 @@ const route = useRoute();
 const { name } = route.query;
 
 //侧栏菜单相关
-const isCollapse = ref(true);
-const activeMenu = ref(1);
 const menuList = ref([
   { name: "设计草图创作", icon: "icon-sharpicons_stylus" },
   { name: "参考图合成创作", icon: "icon-sharpicons_vector-shape" },
@@ -83,15 +77,10 @@ const menuList = ref([
   { name: "设计灵感", icon: "icon-sharpicons_pen" },
   { name: "设计方案", icon: "icon-sharpicons_marker" },
 ])
-
-//侧栏菜单是否点击外面
-const leftMenuRef = ref();
-const { isOutSide } = useClickOutSide(leftMenuRef);
-// isCollapse = isOutSide;
-
-const handleClickMenu = ({index}) => {
-  activeMenu.value = Number(index);
-  isCollapse.value = false;
+const isCollapse = ref(true);
+const activeMenu = ref(0);
+const handleClickMenu = (index) => {
+  activeMenu.value = index;
 }
 </script>
 <style lang="scss" scoped>
@@ -153,52 +142,48 @@ div.drawerHome {
       width: 87px;
       height: 100%;
       border-radius: 0 40px 40px 0;
-      background: rgba(108, 108, 108, 0.9);
+      background: #0E0D0D;
       position: absolute;
       top: 0;
       left: 0;
       z-index: 10;
       display: flex;
       align-items: center;
-      .el-menu {
-        margin-left: 23px;
-        border-right: unset;
-        background: rgba(108, 108, 108, 0);
-        .el-menu-item {
+      transition: all .55s linear;
+      ul {
+        margin: 0 23px;
+        li {
           width: 41px;
           height: 41px;
           line-height: 41px;
           text-align: center;
-          margin-bottom: 27px;
-          padding: 0;
+          margin-bottom: 23px;
           color: #fff;
-          border-radius: 30px;
-          span {
-            display: inline;
-            width: unset;
-            height: unset;
+          background: #4D4D4D;
+          cursor: pointer;
+          border-radius: 25px;
+          overflow:hidden;
+          text-overflow:ellipsis;
+          white-space:nowrap;
+          transition: width .55s linear;
+          &.active {
+            color: #000;
+            background: #ffffff;
           }
-          i {
-            padding-left: 13px;
-            padding-right: 5px;
-            visibility: visible;
-          }
-          &:hover {
-            background: rgba(216, 216, 216, 0.39);
-          }
-          &.is-active {
-            background: rgba(216, 216, 216, 0.39);
+          span.name{
+            padding-left: 10px;
           }
         }
       }
       &.collapseMenu {
         width: 250px;
-        .el-menu {
-          .el-menu-item {
-            width: 195px;
+        background: rgba(108, 108, 108, 0.9);
+        ul {
+          li {
+            width: 204px;
             height: 50px;
             line-height: 50px;
-            padding-left: 20px;
+            border-radius: 25px;
           }
         }
       }
