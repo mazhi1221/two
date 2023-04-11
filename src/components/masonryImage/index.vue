@@ -5,22 +5,30 @@
         <img
           :src="item.content.url"
           :style="imgStyle"
+          @click="selectImage(item)"
         >
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { defineProps } from 'vue';
+import { defineEmits, defineProps } from 'vue';
+
+const emit = defineEmits(['selectImage'])
 const props = defineProps({
   imageBlocks: Array,
   imgStyle: Object,
 });
+
+const selectImage = (item) => {
+  emit("selectImage", item);
+}
 </script>
 <style lang="scss" scoped>
 div.masonryImage {
   img {
     border-radius: 20px;
+    cursor: pointer;
   }
 }
 </style>

@@ -9,30 +9,56 @@
       <div class="imgBox">
         <el-image
           v-if="imageBlocks.length"
-          :src="imageBlocks[0].content.url"
-          fit="cover"
+          :src="focusImageUrl"
+          fit="contain"
         />
+        <el-button
+          v-if="focusImageUrl"
+          @click="editImage"
+          size="small">
+          编辑图片
+        </el-button>
       </div>
       <div class="imgScroll">
-
+        <splide-image
+          v-if="splideImageList.length"
+          :splideImageList="splideImageList"
+        />
       </div>
     </div>
-    <div class="generatePicture">
+    <div
+      class="generatePicture"
+      v-loading="loading"
+      element-loading-text="图片生成中..."
+      element-loading-background="rgba(122, 122, 122, 0.8)"
+    >
       <el-empty v-if="!imageBlocks.length" description="暂无生成图片" />
       <masonry-image
         v-else
         :imageBlocks="imageBlocks"
         :imgStyle="imgStyle"
+        @selectImage="selectImage"
       />
     </div>
   </div>
 </template>
 <script setup>
 import MasonryImage from "@/components/masonryImage/index.vue";
+import SplideImage from "@/components/splideImage/index.vue";
 import { ElMessage } from 'element-plus'
 import { createStudioWorks } from "@/api/project";
 import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+
+const focusImageUrl = ref(""); //聚焦图片地址
+const splideImageList = ref([]); //用户收集图片轮播
+
+const emit = defineEmits(['handleEditImage']);
+const loading = ref(false);
+const editImage = function() {
+  const url = focusImageUrl.value;
+  emit("handleEditImage", url)
+}
 
 //设计草图创作
 const prompt = ref("");
@@ -52,13 +78,43 @@ const handleCreateStudioWorks = () => {
     })
     return;
   }
+  loading.value = true;
   const params = {
     mainId: id,
     prompt: prompt.value,
     type: "DESIGN"
   }
   createStudioWorks(params).then(res => {
+    if (!imageBlocks.value.length) {
+      focusImageUrl.value = res[0].content.url;
+      splideImageList.value.push(res[0].content.url);
+    }
     imageBlocks.value.push(...res);
+    loading.value = false;
+  })
+}
+
+const selectImage = (item) => {
+  const { id: imageId, url } = item.content;
+  focusImageUrl.value = url;
+  splideImageList.value.push(url);
+  if (!prompt.value) {
+    ElMessage({
+      message: '描述信息不能为空.',
+      type: 'warning',
+    })
+    return;
+  }
+  loading.value = true;
+  const params = {
+    mainId: id,
+    mainWorksId: imageId,
+    prompt: prompt.value,
+    type: "DESIGN"
+  }
+  createStudioWorks(params).then(res => {
+    imageBlocks.value.push(...res);
+    loading.value = false;
   })
 }
 </script>
@@ -121,25 +177,32 @@ div.designingScheme {
       height: 640px;
       margin-bottom: 20px;
       border-radius: 20px;
-      background: #8C8C8C;
+      background: rgba(0 ,0 ,0, 0.1);
+      position: relative;
       .el-image {
         width: 100%;
         height: 100%;
         display: block;
         border-radius: 20px;
       }
+      .el-button {
+        position: absolute;
+        right: 15px;
+        bottom: 10px;
+      }
     }
     div.imgScroll {
       width: 100%;
       height: 96px;
       border-radius: 20px;
-      background: #8C8C8C;
+      background: rgba(0 ,0 ,0, 0.1);
     }
   }
   >div.generatePicture {
     float: left;
     width: 861px;
     height: 100%;
+    border-radius: 20px;
     overflow-y: auto;
     .el-empty {
       height: 100%;

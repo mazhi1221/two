@@ -12,7 +12,7 @@ import "tui-color-picker/dist/tui-color-picker.css";
 import ImageEditor from "tui-image-editor";
 import { locale_zh } from "./locale_zh";
 import { customTheme } from "./customTheme";
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, watch } from 'vue';
 
 const props = defineProps({
   imageUrl: String
@@ -54,6 +54,10 @@ const initImageEditor = () => {
   });
 }
 
+onMounted(() => {
+  initImageEditor();
+})
+
 const reset = () => {
   initImageEditor();
 }
@@ -78,10 +82,6 @@ const save = () => {
   form.append("image", blob);
   // upload file
 }
-
-onMounted(() => {
-  initImageEditor();
-})
 </script>
 <style lang="scss" scoped>
 .drawing-container {

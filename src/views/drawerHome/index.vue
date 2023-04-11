@@ -41,17 +41,22 @@
         </ul>
       </div>
       <div class="rightContent">
-        <designing-scheme v-if="activeMenu === 0"/>
+        <designing-scheme v-if="activeMenu === 0" @handleEditImage="handleEditImage"/>
         <reference-synthesis v-if="activeMenu === 1"/>
         <line-drawing-generation v-if="activeMenu === 2"/>
         <original-color v-if="activeMenu === 3"/>
         <design-inspiration v-if="activeMenu === 4"/>
         <sketch-design v-if="activeMenu === 5"/>
+        <edit-image-dialog
+          :dialogVisible="editImageDialogVisible"
+          :editImageDialogUrl="editImageDialogUrl"
+          @handleCloseDialog="editImageDialogVisible = false;"/>
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import EditImageDialog from './components/editImageDialog.vue'
 import DesigningScheme from './components/designingScheme.vue'
 import ReferenceSynthesis  from './components/referenceSynthesis.vue'
 import LineDrawingGeneration  from './components/lineDrawingGeneration.vue'
@@ -81,6 +86,13 @@ const isCollapse = ref(true);
 const activeMenu = ref(0);
 const handleClickMenu = (index) => {
   activeMenu.value = index;
+}
+
+let editImageDialogVisible = ref(false);
+let editImageDialogUrl = ref("");
+const handleEditImage = (url) => {
+  editImageDialogUrl.value = url;
+  editImageDialogVisible.value = true;
 }
 </script>
 <style lang="scss" scoped>

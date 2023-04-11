@@ -29,6 +29,11 @@ app.use(VueAxios, axios);
 import { VueMasonryPlugin } from 'vue-masonry';
 app.use(VueMasonryPlugin);
 
+//引入轮播图组件
+import '@splidejs/vue-splide/css';
+import VueSplide from '@splidejs/vue-splide';
+app.use( VueSplide );
+
 //定义一个应用级的错误处理器，它将捕获所有由子组件上抛而未被处理的错误：
 app.config.errorHandler = (err) => {
   alert(err);
