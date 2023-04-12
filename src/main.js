@@ -2,6 +2,14 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
+//环境变量的使用(https://cn.vitejs.dev/guide/env-and-mode.html#env-files)
+//Vite暴露给客户端源码的环境变量对象为import.meta.env，不支持动态设置，在引用它们时请使用完全静态的字符串。
+//它包含了一些所有情况下都可以使用的内建变量
+//它还将替换出现在 JavaScript 和 Vue 模板中的字符串 import.meta.env.*
+//它还支持在 HTML 文件中替换环境变量。
+//为了防止意外地将一些环境变量泄漏到客户端，只有以 VITE_ 为前缀的变量才会暴露给经过 vite 处理的代码。
+//如果想要在环境变量中使用 $ 符号，则必须使用 \ 对其进行转义。
+
 import './assets/main.css'
 import 'element-plus/theme-chalk/dark/css-vars.css' //element暗黑模式
 import './assets/styles/dark/css-vars.css' //element自定义暗黑模式（覆盖默认暗黑模式）
