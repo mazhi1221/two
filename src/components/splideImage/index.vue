@@ -52,7 +52,7 @@ const handleFileUpload = ({file}) => {
   }
   uploadStudioImage(params).then(res => {
     const imgUrl = res.content.url;
-    mixSplideImageList.push(imgUrl);
+    mixSplideImageList.value.push(imgUrl);
   })
 }
 
