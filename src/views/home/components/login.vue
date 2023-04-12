@@ -39,15 +39,12 @@
 <script setup>
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min';
 import { reactive, ref, defineEmits, defineProps } from 'vue';
-import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus';
 import { login } from '../../../api/home';
 import { useUserStore } from "../../../stores/user"
-import { storeToRefs } from 'pinia'
-import { setItem } from "@/utils/storage";
 
 //状态管理
-const user = useUserStore();
-// const { token } = storeToRefs(user);
+const userStore = useUserStore();
 
 //定义组件属性
 const props = defineProps({ dialogVisible: Boolean})
@@ -85,8 +82,9 @@ const handleLogin = (loginFormRef) => {
           type: 'success',
         })
         handleCloseDialog();
+        //设置token;
         const { token } = res;
-        setItem("authorization", 'Bearer ' + token)
+        userStore.setToken(token);
       })
     }
   })

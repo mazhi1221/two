@@ -1,20 +1,31 @@
 import { defineStore } from 'pinia';
+import { setItem, getItem } from "@/utils/storage";
 
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
-      token: null,
+      token: getItem("authorization") || "",
     }
   },
   getters: {
-    doubleCount: (state) => state.counter * 2,
-    doublePlusOne() {
-      return this.doubleCount + 1
-    },
+
   },
   actions: {
-    setUser() {
-      this.count++
+    logout() {
+      this.$patch({
+        token: '',
+      })
+    },
+    // async login(user, password) {
+    //   const userData = await apiLogin(user, password)
+    //   this.$patch({
+    //     name: user,
+    //     ...userData,
+    //   })
+    // },
+    setToken(token) {
+      this.token = token;
+      setItem("authorization", 'Bearer ' + token)
     },
   },
 })
