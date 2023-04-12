@@ -151,3 +151,7 @@ html, body {
     scrollbar-track-color: #f1f1f1; /**//*立体滚动条背景颜色*/
     scrollbar-base-color: #f1f1f1; /**//*滚动条的基本颜色*/
 }
+
+#nprogress .bar {
+  background: pink !important;
+}
