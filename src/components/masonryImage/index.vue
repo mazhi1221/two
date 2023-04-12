@@ -26,6 +26,7 @@ const selectImage = (item) => {
 </script>
 <style lang="scss" scoped>
 div.masonryImage {
+  height: 100%;
   img {
     border-radius: 20px;
     cursor: pointer;

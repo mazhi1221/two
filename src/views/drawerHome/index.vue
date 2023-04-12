@@ -30,8 +30,8 @@
           <li
             v-for="(item, index) in menuList"
             :key="index"
-            @click="handleClickMenu(index)"
-            :class="{ active: index === activeMenu }"
+            @click="handleClickMenu(item)"
+            :class="{ active: item.name === activeMenu }"
           >
             <span>
               <i :class="['iconfont', item.icon]"></i>
@@ -41,12 +41,13 @@
         </ul>
       </div>
       <div class="rightContent">
-        <designing-scheme v-if="activeMenu === 0" @handleEditImage="handleEditImage"/>
-        <reference-synthesis v-if="activeMenu === 1"/>
-        <line-drawing-generation v-if="activeMenu === 2"/>
-        <original-color v-if="activeMenu === 3"/>
-        <design-inspiration v-if="activeMenu === 4"/>
-        <sketch-design v-if="activeMenu === 5"/>
+        <designing-scheme v-if="activeMenu === '设计草图创作'" @handleEditImage="handleEditImage"/>
+        <reference-synthesis v-if="activeMenu === '参考图合成创作'"/>
+        <line-drawing-generation v-if="activeMenu === '图片结构'"/>
+        <original-color v-if="activeMenu === '原图上色'"/>
+        <design-inspiration v-if="activeMenu === '设计灵感'"/>
+        <sketch-design v-if="activeMenu === '设计方案'"/>
+
         <edit-image-dialog
           :dialogVisible="editImageDialogVisible"
           :editImageDialogUrl="editImageDialogUrl"
@@ -56,13 +57,14 @@
   </div>
 </template>
 <script setup>
+import DesigningScheme from './page/designingScheme.vue'
+import ReferenceSynthesis  from './page/referenceSynthesis.vue'
+import LineDrawingGeneration  from './page/lineDrawingGeneration.vue'
+import OriginalColor  from './page/originalColor.vue'
+import DesignInspiration  from './page/designInspiration.vue'
+import SketchDesign  from './page/sketchDesign.vue'
+
 import EditImageDialog from './components/editImageDialog.vue'
-import DesigningScheme from './components/designingScheme.vue'
-import ReferenceSynthesis  from './components/referenceSynthesis.vue'
-import LineDrawingGeneration  from './components/lineDrawingGeneration.vue'
-import OriginalColor  from './components/originalColor.vue'
-import DesignInspiration  from './components/designInspiration.vue'
-import SketchDesign  from './components/sketchDesign.vue'
 import { Sunny, Moon } from '@element-plus/icons-vue'
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
@@ -76,16 +78,16 @@ const { name } = route.query;
 //侧栏菜单相关
 const menuList = ref([
   { name: "设计草图创作", icon: "icon-sharpicons_stylus" },
-  { name: "参考图合成创作", icon: "icon-sharpicons_vector-shape" },
-  { name: "线稿图生成", icon: "icon-sharpicons_files" },
+  // { name: "参考图合成创作", icon: "icon-sharpicons_vector-shape" },
+  { name: "图片结构", icon: "icon-sharpicons_files" },
   { name: "原图上色", icon: "icon-sharpicons_brush-" },
   { name: "设计灵感", icon: "icon-sharpicons_pen" },
-  { name: "设计方案", icon: "icon-sharpicons_marker" },
+  // { name: "设计方案", icon: "icon-sharpicons_marker" },
 ])
 const isCollapse = ref(true);
-const activeMenu = ref(0);
-const handleClickMenu = (index) => {
-  activeMenu.value = index;
+const activeMenu = ref('设计草图创作');
+const handleClickMenu = (item) => {
+  activeMenu.value = item.name;
 }
 
 let editImageDialogVisible = ref(false);

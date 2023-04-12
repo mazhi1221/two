@@ -1,26 +1,63 @@
 <template>
   <div class="splideImage">
     <Splide :options="options">
-      <SplideSlide v-for="(item, index) in splideImageList">
-        <img :src="item" :key="index" alt="Sample 2">
+      <SplideSlide v-for="(item, index) in mixSplideImageList">
+        <img
+          :src="item"
+          :key="index"
+          @click="handleSelectImage(item)"
+        >
+      </SplideSlide>
+      <SplideSlide>
+        <el-upload
+          class="avatar-uploader"
+          action=""
+          :show-file-list="false"
+          :http-request="handleFileUpload"
+        >
+          <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+        </el-upload>
       </SplideSlide>
     </Splide>
   </div>
 </template>
 <script setup>
-import { defineEmits, defineProps } from 'vue';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
+import { uploadStudioImage } from "@/api/project";
+import { Plus } from '@element-plus/icons-vue'
+import { ref, defineEmits, defineProps } from 'vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps({ splideImageList: Array});
-
+const emit = defineEmits(['handleSelectImage'])
+const mixSplideImageList = ref(props.splideImageList)
 const options = {
-  perPage: 3,
+  perPage: 5,
   perMove: 1,
   padding: 40,
   focus  : 'center',
   type: 'slide',
   rewind: true,
   height: "96px",
+}
+
+const route = useRoute();
+const { id } = route.query;
+const handleFileUpload = ({file}) => {
+  const params = {
+    mainId: id,
+    type: "LINE",
+    category: "SELECTED",
+    file: file,
+  }
+  uploadStudioImage(params).then(res => {
+    const imgUrl = res.content.url;
+    mixSplideImageList.push(imgUrl);
+  })
+}
+
+const handleSelectImage = (url) => {
+  emit("handleSelectImage", url);
 }
 
 </script>
@@ -37,6 +74,34 @@ const options = {
   }
   img {
     height: 100%;
+    cursor: pointer;
+  }
+  .avatar-uploader {
+    width: 96px;
+    height: 96px;
+    display: block;
+    ::v-deep {
+      .el-upload {
+        width: 100%;
+        height: 100%;
+        border: 1px dashed var(--el-border-color);
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: var(--el-transition-duration-fast);
+        &:hover {
+          border-color: var(--el-color-primary);
+        }
+        .el-icon.avatar-uploader-icon {
+          font-size: 28px;
+          color: #ffffff;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+        }
+      }
+    }
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="designingScheme">
+  <div class="referenceSynthesis">
     <div class="currentPicture">
       <div class="search">
         <img src="../../../assets/img/home_paint.svg" alt="">
@@ -119,7 +119,7 @@ const selectImage = (item) => {
 }
 </script>
 <style lang="scss" scoped>
-div.designingScheme {
+div.referenceSynthesis {
   width: 100%;
   height: 100%;
   padding: 20px;
@@ -210,3 +210,4 @@ div.designingScheme {
   }
 }
 </style>
+

@@ -1,6 +1,6 @@
 <template>
-  <div class="referenceSynthesis">
-    参考图合成创作
+  <div class="gridImageArea">
+
   </div>
 </template>
 <script setup>
