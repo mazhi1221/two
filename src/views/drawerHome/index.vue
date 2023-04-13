@@ -3,7 +3,8 @@
     <div class="header">
       <div class="left">
         <img src="../../assets/img/drawer_home_logo.svg" alt="">
-        <span>{{ name || "位命名口袋" }}</span>
+        <span class="pageName">{{ activeMenu }}</span>
+        <span class="projectName">{{ name}}</span>
       </div>
       <div class="right">
         <el-badge :value="12" class="item">
@@ -119,9 +120,15 @@ div.drawerHome {
       img {
         width: 25px;
         height: 25px;
-        margin-right: 30px;
+        margin-right: 5px;
       }
-      span {
+      span.pageName {
+        font-size: 18px;
+        font-weight: 500;
+        color: #FFFFFF;
+        margin-right: 20px;
+      }
+      span.projectName {
         font-size: 14px;
         font-weight: 500;
         color: #FFFFFF;
