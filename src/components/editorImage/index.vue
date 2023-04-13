@@ -21,6 +21,7 @@ const props = defineProps({
 const imageEditor = ref(null);
 const initImageEditor = () => {
   const options = {
+    corsenabled: false,
     includeUI: {
       loadImage: {
         path: props.imageUrl,
