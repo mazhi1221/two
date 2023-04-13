@@ -45,7 +45,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup name="designingScheme">
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
 import { ElMessage } from 'element-plus'

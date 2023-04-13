@@ -1,6 +1,8 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend' //可以直接在script标签上定义name
+import AutoImport from 'unplugin-auto-import/vite'  //日常项目中定义变量需要引入ref,reactive等等比较麻烦，可以通过unplugin-auto-import给我们自动引入
 
 //node环境变量：process对象是一个 global （全局变量），提供有关信息，控制当前 Node.js 进程。
 //process.env属性返回一个包含用户环境信息的对象。
@@ -9,7 +11,14 @@ import vue from '@vitejs/plugin-vue'
 console.log(process.env.NODE_ENV)
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    VueSetupExtend(),
+    AutoImport({
+      imports: ['vue', 'vue-router'],
+      dts: 'src/auto-import.d.ts',
+    })
+  ],
   server: {
     host: "localhost",
     port: 3000,

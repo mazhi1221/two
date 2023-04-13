@@ -43,11 +43,11 @@
       </div>
       <div class="rightContent">
         <designing-scheme v-if="activeMenu === '设计草图创作'" @handleEditImage="handleEditImage"/>
-        <reference-synthesis v-if="activeMenu === '参考图合成创作'"/>
         <line-drawing-generation v-if="activeMenu === '图片结构'"/>
-        <original-color v-if="activeMenu === '原图上色'"/>
         <design-inspiration v-if="activeMenu === '设计灵感'"/>
-        <sketch-design v-if="activeMenu === '设计方案'"/>
+<!--        <reference-synthesis v-if="activeMenu === '参考图合成创作'"/>-->
+<!--        <original-color v-if="activeMenu === '原图上色'"/>-->
+<!--        <sketch-design v-if="activeMenu === '设计方案'"/>-->
 
         <edit-image-dialog
           :dialogVisible="editImageDialogVisible"
@@ -79,10 +79,10 @@ const { name } = route.query;
 //侧栏菜单相关
 const menuList = ref([
   { name: "设计草图创作", icon: "icon-sharpicons_stylus" },
-  // { name: "参考图合成创作", icon: "icon-sharpicons_vector-shape" },
   { name: "图片结构", icon: "icon-sharpicons_files" },
-  { name: "原图上色", icon: "icon-sharpicons_brush-" },
   { name: "设计灵感", icon: "icon-sharpicons_pen" },
+  // { name: "参考图合成创作", icon: "icon-sharpicons_vector-shape" },
+  // { name: "原图上色", icon: "icon-sharpicons_brush-" },
   // { name: "设计方案", icon: "icon-sharpicons_marker" },
 ])
 const isCollapse = ref(true);

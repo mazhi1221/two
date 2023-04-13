@@ -1,6 +1,8 @@
 <template>
   <div class="baseViews">
-    <router-view />
+    <KeepAlive include="designingScheme, lineDrawingGeneration, designInspiration">
+      <router-view />
+    </KeepAlive>
   </div>
 </template>
 <script setup>

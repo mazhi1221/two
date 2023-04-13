@@ -41,7 +41,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup name="lineDrawingGeneration">
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
 import { Plus } from '@element-plus/icons-vue'

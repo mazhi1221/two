@@ -3,7 +3,8 @@
     设计灵感
   </div>
 </template>
-<script setup>
+<script setup name="designInspiration">
+
 
 </script>
 <style lang="scss" scoped>
