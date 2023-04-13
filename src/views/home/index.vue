@@ -23,17 +23,6 @@
           </div>
         </div>
         <div class="right">
-          <el-badge :value="12" class="item">
-            <img src="../../assets/img/home_message.svg" alt="">
-          </el-badge>
-          <el-switch
-            v-model="themeMode"
-            class="themeMode"
-            size="large"
-            inline-prompt
-            :active-icon="Sunny"
-            :inactive-icon="Moon"
-          />
           <div class="btn login active" @click="loginBtnClick">登陆</div>
           <div class="btn register">注册</div>
         </div>
@@ -61,7 +50,6 @@
 import Login from "./components/login.vue";
 import CreateProject from "./components/createProject.vue";
 import MasonryImage from "@/components/masonryImage/index.vue";
-import { Sunny, Moon } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -77,11 +65,6 @@ let createDialogVisible = ref(false);
 const createBtnClick = () => {
   createDialogVisible.value = true;
 }
-
-const themeMode = ref(true)
-onMounted(() => {
-
-})
 
 </script>
 <style lang="scss" scoped>
@@ -180,15 +163,6 @@ div.home {
         display: flex;
         justify-content: start;
         align-items: center;
-        img {
-          width: 24px;
-          height: 24px;
-          cursor: pointer;
-          margin-top: 5px;
-        }
-        .themeMode {
-          margin-left: 14px;
-        }
         div.btn {
           width: 58px;
           height: 34px;

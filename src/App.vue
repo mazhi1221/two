@@ -1,8 +1,10 @@
 <template>
   <div class="baseViews">
-    <KeepAlive include="designingScheme, lineDrawingGeneration, designInspiration">
-      <router-view />
-    </KeepAlive>
+    <router-view v-slot="{ Component }">
+      <keep-alive include="designingScheme, lineDrawingGeneration, designInspiration">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </div>
 </template>
 <script setup>

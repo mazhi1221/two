@@ -1,11 +1,18 @@
 import request from '../utils/https';
 
-//根据文字及图片创造
-export const createStudioWorks = (data) =>
+//获取生成图片的任务ID
+export const getStudioProjectID = (data) =>
   request({
     method: "post",
     url: "/api/studio/works",
     data,
+  });
+
+//查询任务ID执行结果
+export const getStudioProjectResult = (id) =>
+  request({
+    method: "get",
+    url: `/api/task/${id}`,
   });
 
 //轮播图中的上传功能

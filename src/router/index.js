@@ -1,7 +1,8 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
+
+//进度条设置
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-
 NProgress.configure({
   easing: 'ease', // 动画方式
   speed: 1000, // 递增进度条的速度

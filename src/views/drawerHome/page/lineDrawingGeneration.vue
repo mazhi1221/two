@@ -46,7 +46,7 @@ import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { createStudioWorks, uploadStudioImage } from "@/api/project";
+import { uploadStudioImage } from "@/api/project";
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
 
@@ -84,54 +84,6 @@ const handleFileUpload = ({file}) => {
 }
 
 
-
-const handleCreateStudioWorks = () => {
-  if (!prompt.value) {
-    ElMessage({
-      message: '描述信息不能为空.',
-      type: 'warning',
-    })
-    return;
-  }
-  loading.value = true;
-  const params = {
-    mainId: id,
-    prompt: prompt.value,
-    type: "DESIGN"
-  }
-  createStudioWorks(params).then(res => {
-    if (!imageBlocks.value.length) {
-      focusImageUrl.value = res[0].content.url;
-      splideImageList.value.push(res[0].content.url);
-    }
-    imageBlocks.value.push(...res);
-    loading.value = false;
-  })
-}
-
-const selectImage = (item) => {
-  const { id: imageId, url } = item.content;
-  focusImageUrl.value = url;
-  splideImageList.value.push(url);
-  if (!prompt.value) {
-    ElMessage({
-      message: '描述信息不能为空.',
-      type: 'warning',
-    })
-    return;
-  }
-  loading.value = true;
-  const params = {
-    mainId: id,
-    mainWorksId: imageId,
-    prompt: prompt.value,
-    type: "DESIGN"
-  }
-  createStudioWorks(params).then(res => {
-    imageBlocks.value.push(...res);
-    loading.value = false;
-  })
-}
 </script>
 <style lang="scss" scoped>
 div.lineDrawingGeneration {

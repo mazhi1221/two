@@ -27,21 +27,32 @@
         />
       </div>
     </div>
-    <div
-      class="generatePicture"
-      v-loading="loading"
-      element-loading-text="图片生成中..."
-      element-loading-background="rgba(122, 122, 122, 0.8)"
-    >
-      <el-empty v-if="!imageBlocks.length" description="暂无生成图片" />
-      <masonry-image
-        class="masonry-image"
-        v-else
-        :imageBlocks="imageBlocks"
-        :imgStyle="imgStyle"
-        @selectImage="selectImage"
-      />
-      <p>选中符合您要求的图片，系统主动学习并生成更佳图片</p>
+    <div class="generatePicture" >
+
+
+      <el-skeleton style="width: 240px" :loading="loading" animated>
+        <template #template>
+          <el-skeleton-item variant="image" style="width: 240px; height: 240px" />
+        </template>
+        <template #default>
+          <img
+            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+            class="image"
+          />
+        </template>
+      </el-skeleton>
+
+
+
+<!--      <el-empty v-if="!imageBlocks.length" description="暂无生成图片" />-->
+<!--      <masonry-image-->
+<!--        class="masonry-image"-->
+<!--        v-else-->
+<!--        :imageBlocks="imageBlocks"-->
+<!--        :imgStyle="imgStyle"-->
+<!--        @selectImage="selectImage"-->
+<!--      />-->
+<!--      <p>选中符合您要求的图片，系统主动学习并生成更佳图片</p>-->
     </div>
   </div>
 </template>
@@ -49,9 +60,9 @@
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
 import { ElMessage } from 'element-plus'
-import { createStudioWorks } from "@/api/project";
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
+import { getStudioProjectID, getStudioProjectResult } from "../../../api/project";
 
 const loading = ref(false);
 const focusImageUrl = ref(""); //聚焦图片地址
@@ -88,14 +99,7 @@ const handleCreateStudioWorks = () => {
     prompt: prompt.value,
     type: "DESIGN"
   }
-  createStudioWorks(params).then(res => {
-    if (!imageBlocks.value.length) {
-      focusImageUrl.value = res[0].content.url;
-      splideImageList.value.push(res[0].content.url);
-    }
-    imageBlocks.value.push(...res);
-    loading.value = false;
-  })
+  createStudioWorksMethods(params)
 }
 
 //选择瀑布流图片-生成-设计草图创作
@@ -117,10 +121,33 @@ const selectImage = (item) => {
     prompt: prompt.value,
     type: "DESIGN"
   }
-  createStudioWorks(params).then(res => {
-    imageBlocks.value.push(...res);
-    loading.value = false;
-  })
+  createStudioWorksMethods(params)
+}
+
+const createStudioWorksMethods = async (params) => {
+  //获取任务ID
+  const { id, total } = await getStudioProjectID(params);
+  //获取任务结果(轮询)
+  const timer = setInterval(async () => {
+    const { status, urls } = await getStudioProjectResult(id);
+    if (res.status === "FINISHED") {
+      clearInterval(timer);
+    }
+  }, 3000);
+
+
+
+
+  // FINISHED
+
+
+  // const res = await createStudioWorks(params);
+  // if (!imageBlocks.value.length) {
+  //   focusImageUrl.value = res[0].content.url;
+  //   splideImageList.value.push(res[0].content.url);
+  // }
+  // imageBlocks.value.push(...res);
+  // loading.value = false;
 }
 
 //轮播图选择图片
@@ -209,11 +236,12 @@ div.designingScheme {
     }
   }
   >div.generatePicture {
-    float: left;
     width: 861px;
     height: 100%;
     border-radius: 20px;
+    background: #141414;
     overflow-y: auto;
+    float: left;
     .el-empty {
       height: calc(100% - 20px);
     }
