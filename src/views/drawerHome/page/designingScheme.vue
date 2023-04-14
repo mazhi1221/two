@@ -3,7 +3,7 @@
     <div class="currentPicture">
       <div class="search">
         <img src="../../../assets/img/home_paint.svg" alt="">
-        <input type="text" placeholder="请一句话描述你想创作的图片" v-model="prompt">
+        <input type="text" placeholder="请一句话描述您想创作的图片" v-model="prompt">
         <el-button
           @click="handleCreateStudioWorks"
           type="primary"
