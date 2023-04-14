@@ -45,10 +45,6 @@
         <designing-scheme v-if="activeMenu === '设计草图创作'" @handleEditImage="handleEditImage"/>
         <line-drawing-generation v-if="activeMenu === '图片结构'"/>
         <design-inspiration v-if="activeMenu === '设计灵感'"/>
-<!--        <reference-synthesis v-if="activeMenu === '参考图合成创作'"/>-->
-<!--        <original-color v-if="activeMenu === '原图上色'"/>-->
-<!--        <sketch-design v-if="activeMenu === '设计方案'"/>-->
-
         <edit-image-dialog
           :dialogVisible="editImageDialogVisible"
           :editImageDialogUrl="editImageDialogUrl"
@@ -59,11 +55,8 @@
 </template>
 <script setup>
 import DesigningScheme from './page/designingScheme.vue'
-import ReferenceSynthesis  from './page/referenceSynthesis.vue'
 import LineDrawingGeneration  from './page/lineDrawingGeneration.vue'
-import OriginalColor  from './page/originalColor.vue'
 import DesignInspiration  from './page/designInspiration.vue'
-import SketchDesign  from './page/sketchDesign.vue'
 
 import EditImageDialog from './components/editImageDialog.vue'
 import { Sunny, Moon } from '@element-plus/icons-vue'
@@ -81,9 +74,6 @@ const menuList = ref([
   { name: "设计草图创作", icon: "icon-sharpicons_stylus" },
   { name: "图片结构", icon: "icon-sharpicons_files" },
   { name: "设计灵感", icon: "icon-sharpicons_pen" },
-  // { name: "参考图合成创作", icon: "icon-sharpicons_vector-shape" },
-  // { name: "原图上色", icon: "icon-sharpicons_brush-" },
-  // { name: "设计方案", icon: "icon-sharpicons_marker" },
 ])
 const isCollapse = ref(true);
 const activeMenu = ref('设计草图创作');
