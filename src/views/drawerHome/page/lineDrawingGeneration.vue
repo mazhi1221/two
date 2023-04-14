@@ -3,87 +3,204 @@
     <div class="currentPicture">
       <div class="search">
         <img src="../../../assets/img/home_paint.svg" alt="">
-        <input type="text" v-model="prompt">
-        <div class="create" @click="handleCreateStudioWorks">创造</div>
+        <input type="text" placeholder="请一句话描述您想创作的图片" v-model="prompt">
+        <el-button
+          @click="handleCreateStudioWorks"
+          type="primary"
+          :loading-icon="Eleme"
+          :loading="loading">
+          {{ !loading ? '创造' : 'AI生成中...' }}
+        </el-button>
       </div>
       <div class="imgBox">
         <el-upload
           class="avatar-uploader"
+          drag
           action=""
           :show-file-list="false"
-          :http-request="handleFileUpload">
-          <img v-if="focusImageUrl" :src="focusImageUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon">
-            <Plus />
-          </el-icon>
+          :http-request="handleFileUpload"
+        >
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            Drop file here or <em>click to upload</em>
+          </div>
         </el-upload>
+<!--        <el-image-->
+<!--          v-if="focusImageUrl"-->
+<!--          :src="focusImageUrl"-->
+<!--          fit="contain"-->
+<!--        />-->
+<!--        <el-button-->
+<!--          v-if="focusImageUrl"-->
+<!--          @click="editImage"-->
+<!--          size="small">-->
+<!--          编辑图片-->
+<!--        </el-button>-->
       </div>
       <div class="imgScroll">
         <splide-image
-          v-if="splideImageList.length"
-          :splideImageList="splideImageList"
+          v-if="selectedImageList.length"
+          :splideImageList="selectedImageList"
+          @handleSelectImage="handleSelectImage"
         />
       </div>
     </div>
-    <div
-      class="generatePicture"
-      v-loading="loading"
-      element-loading-text="图片生成中..."
-      element-loading-background="rgba(122, 122, 122, 0.8)"
-    >
-      <el-empty v-if="!imageBlocks.length" description="暂无生成图片" />
+    <div class="generatePicture" >
+      <ul class="themeColor">
+        <li v-for="(item, index) in structureImageList" @click="selectStructure(item, index)">
+          <div class="imgBox">
+            <img :src="item.content.url" alt="">
+          </div>
+          <p :class="{active: structureNameActive === structureNameList[index]}">{{ structureNameList[index] }}</p>
+        </li>
+      </ul>
       <masonry-image
-        v-else
-        :imageBlocks="imageBlocks"
-        :imgStyle="imgStyle"
+        class="masonry-image"
+        :imageBlocks="generateImageList"
+        :imgStyle="{
+          width: '200px',
+          'margin-right': '10px',
+          'margin-bottom': '10px'
+        }"
         @selectImage="selectImage"
       />
     </div>
   </div>
 </template>
-<script setup name="lineDrawingGeneration">
+<script setup name="designingScheme">
+import { getHistoryPrompt, getHistoryImage, getStudioProjectID, getStudioProjectResult, uploadStudioImage, getStructureStudioProject } from "../../../api/project";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
-import { Plus } from '@element-plus/icons-vue'
+import { Eleme, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { uploadStudioImage } from "@/api/project";
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
 
-const focusImageUrl = ref(""); //聚焦图片地址
-const splideImageList = ref([]); //用户收集图片轮播
+const { id: mainId } = useRoute().query; //工作室ID
+const prompt = ref("");            //生成图片提示信息
+let loading = $ref(false);
+let focusImageUrl = $ref("");      //聚焦图片地址
+let selectedImageList = $ref([]);  //选择的图片(轮播)
+let generateImageList = $ref([]);  //生成的图片(瀑布流)
 
+let structureImageList = $ref([]);  //生成的结构图(6张)
+let structureNameList = ["线稿", "深度", "3D", "姿势和动作", "边缘", "直线"];         //生成的结构图名称
+let structureNameActive = $ref("线稿");
+
+//上传图片
+const handleFileUpload = ({file}) => {
+  const params = {
+    mainId,
+    type: "STRUCTURE",
+    category: "SELECTED",
+    file: file,
+  }
+  uploadStudioImage(params).then(async (res) => {
+    const { id } = res;
+    structureImageList = await getStructureStudioProject({mainId, mainWorksId: id});
+  })
+}
+
+const selectStructure = (item, index) => {
+  structureNameActive = structureNameList[index];
+}
+
+//选择瀑布流图片-生成-设计草图创作
+const selectImage = (item) => {
+  if (!prompt.value) {
+    ElMessage({ message: '描述信息不能为空.', type: 'warning' })
+    return;
+  }
+  const index = structureNameList.findIndex(name => name === structureNameActive);
+  const { id: imageId, url } = structureImageList[index].content;
+  focusImageUrl = url;
+  selectedImageList.push(url);
+  const params = {
+    mainId,
+    mainWorksId: imageId,
+    prompt: prompt.value,
+    type: "STRUCTURE"
+  }
+  createStudioWorksMethods(params)
+}
+
+//生成-结构图
+const handleCreateStudioWorks = () => {
+  if (!prompt.value) {
+    ElMessage({ message: '描述信息不能为空.', type: 'warning' })
+    return;
+  }
+  const index = structureNameList.findIndex(name => name === structureNameActive);
+  const { id: imageId, url } = structureImageList[index].content;
+  const params = {
+    mainId,
+    prompt: prompt.value,
+    type: "STRUCTURE"
+  }
+  createStudioWorksMethods(params)
+}
+
+const createStudioWorksMethods = async (params) => {
+  loading = true;
+  let timer = null;
+  let loopTimer = 1000 * 3;
+  const { id } = await getStudioProjectID(params);
+  const { status, total } = await getStudioProjectResult(id);
+  if (status !== "FINISHED") {
+    timer = setInterval(async () => {
+      const { status, total, dataList } = await getStudioProjectResult(id);
+      //当没有历史图片
+      if (!generateImageList.length) {
+        focusImageUrl = dataList[0].content.url;
+        selectedImageList.push(dataList[0].content.url);
+      }
+      dataList.forEach(item_ => {
+        if (!generateImageList.filter(item => item.id === item_.id).length) {
+          generateImageList.push(item_)
+        }
+      })
+      if (status === "FINISHED") {
+        loading = false;
+        timer && clearInterval(timer);
+      }
+    }, loopTimer)
+  }
+}
+
+
+
+onMounted(async () => {
+  //获取最后一次提示信息
+  const prompt_ = await getHistoryPrompt({ mainId, type: "DESIGN" });
+  const { sourceContent = "" } = prompt_;
+  prompt.value = sourceContent;
+
+  //获取生成的历史图片
+  generateImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "GENERATE" })
+  if (generateImageList.length) focusImageUrl = generateImageList[0].content.url;
+
+  //获取选择的历史图片
+  const selectedImageList_ = await getHistoryImage({ mainId, type: "DESIGN", category: "SELECTED" })
+  selectedImageList = selectedImageList_.map(item => item.content.url);
+})
+
+
+
+
+
+
+
+//编辑图片功能
 const emit = defineEmits(['handleEditImage']);
-const loading = ref(false);
 const editImage = function() {
   const url = focusImageUrl.value;
   emit("handleEditImage", url)
 }
 
-//设计草图创作
-const prompt = ref("");
-const imgStyle = {
-  width: '200px',
-  'margin-right': '10px',
-  'margin-bottom': '10px'
+//轮播图选择图片
+const handleSelectImage = (url) => {
+  focusImageUrl = url;
 }
-const imageBlocks = ref([]);
-const route = useRoute();
-const { id } = route.query;
-
-const handleFileUpload = ({file}) => {
-  const params = {
-    mainId: id,
-    type: "LINE",
-    category: "COMPOSITE",
-    file: file,
-  }
-  uploadStudioImage(params).then(res => {
-    console.log(res);
-  })
-}
-
-
 </script>
 <style lang="scss" scoped>
 div.lineDrawingGeneration {
@@ -112,7 +229,7 @@ div.lineDrawingGeneration {
         left: 15px;
       }
       input {
-        width: calc(100% - 40px - 94px);
+        width: calc(100% - 40px - 110px);
         height: 40px;
         padding: 0 10px;
         outline-style: none;
@@ -123,11 +240,11 @@ div.lineDrawingGeneration {
         font-size: 14px;
         color: #9C9A9A;
       }
-      div.create {
+      .el-button{
         position: absolute;
         top: 8px;
         right: 15px;
-        width: 79px;
+        width: 100px;
         height: 24px;
         line-height: 24px;
         text-align: center;
@@ -149,10 +266,11 @@ div.lineDrawingGeneration {
       .avatar-uploader {
         width: 100%;
         height: 100%;
+        display: block;
         ::v-deep {
           .el-upload {
             width: 100%;
-            height: 640px;
+            height: 100%;
             border: 1px dashed var(--el-border-color);
             border-radius: 6px;
             cursor: pointer;
@@ -162,15 +280,34 @@ div.lineDrawingGeneration {
             &:hover {
               border-color: var(--el-color-primary);
             }
+            .el-upload-dragger {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              flex-direction: column;
+              align-items: center;
+            }
             .el-icon.avatar-uploader-icon {
-              font-size: 58px;
-              color: #8c939d;
-              width: 178px;
-              height: 178px;
+              font-size: 28px;
+              color: #ffffff;
+              width: 100%;
+              height: 100%;
               text-align: center;
             }
           }
         }
+      }
+      .el-image {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 20px;
+      }
+      .el-button {
+        position: absolute;
+        right: 15px;
+        bottom: 10px;
       }
     }
     div.imgScroll {
@@ -181,15 +318,50 @@ div.lineDrawingGeneration {
     }
   }
   >div.generatePicture {
-    float: left;
     width: 861px;
     height: 100%;
+    padding: 10px 0 10px 10px;
+    box-sizing: border-box;
     border-radius: 20px;
-    overflow-y: auto;
-    .el-empty {
-      height: 100%;
+    background: #141414;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    ul.themeColor {
+      width: 100%;
+      margin-bottom: 20px;
+      padding-right: 10px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      li {
+        cursor: pointer;
+        div.imgBox {
+          width: 109px;
+          height: 109px;
+          margin-bottom: 17px;
+          border-radius: 20px;
+          background: #D8D8D8;
+          img {
+            display: block;
+            width: 100%;
+          }
+        }
+        p {
+          text-align: center;
+          font-size: 16px;
+          color: #FFFFFF;
+          &.active {
+            color: #7b0daf;
+          }
+        }
+      }
     }
+    .masonry-image {
+      flex: 1;
+      overflow-y: auto;
+    }
+
   }
 }
 </style>
-

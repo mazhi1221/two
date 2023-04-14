@@ -232,23 +232,14 @@ div.designingScheme {
   >div.generatePicture {
     width: 861px;
     height: 100%;
+    padding: 10px 0 10px 10px;
+    box-sizing: border-box;
     border-radius: 20px;
     background: #141414;
     overflow-y: auto;
     float: left;
-    .el-empty {
-      height: calc(100% - 20px);
-    }
     .masonry-image {
       height: calc(100% - 20px);
-    }
-    p {
-      padding-right: 20px;
-      height: 20px;
-      line-height: 20px;
-      text-align: right;
-      font-size: 12px;
-      color: #909399;
     }
   }
 }

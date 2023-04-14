@@ -39,3 +39,11 @@ export const uploadStudioImage = (data) =>
     data,
     headers: {'Content-Type': 'multipart/form-data'}
   });
+
+//轮播图中的上传功能
+export const getStructureStudioProject = (data) =>
+  request({
+    method: "post",
+    url: "/api/studio/works/structure",
+    data,
+  });
