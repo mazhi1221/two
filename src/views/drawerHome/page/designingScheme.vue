@@ -8,7 +8,7 @@
       </div>
       <div class="imgBox">
         <el-image
-          v-if="imageBlocks.length"
+          v-if="focusImageUrl"
           :src="focusImageUrl"
           fit="contain"
         />
@@ -21,52 +21,41 @@
       </div>
       <div class="imgScroll">
         <splide-image
-          v-if="splideImageList.length"
-          :splideImageList="splideImageList"
+          v-if="selectedImageList.length"
+          :splideImageList="selectedImageList"
           @handleSelectImage="handleSelectImage"
         />
       </div>
     </div>
     <div class="generatePicture" >
-
-
-      <el-skeleton style="width: 240px" :loading="loading" animated>
-        <template #template>
-          <el-skeleton-item variant="image" style="width: 240px; height: 240px" />
-        </template>
-        <template #default>
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="image"
-          />
-        </template>
-      </el-skeleton>
-
-
-
-<!--      <el-empty v-if="!imageBlocks.length" description="暂无生成图片" />-->
-<!--      <masonry-image-->
-<!--        class="masonry-image"-->
-<!--        v-else-->
-<!--        :imageBlocks="imageBlocks"-->
-<!--        :imgStyle="imgStyle"-->
-<!--        @selectImage="selectImage"-->
-<!--      />-->
-<!--      <p>选中符合您要求的图片，系统主动学习并生成更佳图片</p>-->
+      <masonry-image
+        class="masonry-image"
+        :imageBlocks="generateImageList"
+        :imgStyle="imgStyle"
+        @selectImage="selectImage"
+      />
     </div>
   </div>
 </template>
 <script setup name="designingScheme">
+import { getHistoryImage, getStudioProjectID, getStudioProjectResult } from "../../../api/project";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
-import { getStudioProjectID, getStudioProjectResult } from "../../../api/project";
 
-const loading = ref(false);
-const focusImageUrl = ref(""); //聚焦图片地址
-const splideImageList = ref([]); //轮播图片地址
+const { id: mainId } = useRoute().query; //工作室ID
+const prompt = ref("");            //生成图片提示信息
+let focusImageUrl = $ref("");     //聚焦图片地址
+let selectedImageList = $ref([]);  //选择的图片(轮播)
+let generateImageList = $ref([]);  //生成的图片(瀑布流)
+
+onMounted(async () => {
+  selectedImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "SELECTED" })
+  generateImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "GENERATE" })
+  if (generateImageList.length) focusImageUrl = generateImageList[0]
+})
 
 //编辑图片功能
 const emit = defineEmits(['handleEditImage']);
@@ -76,15 +65,14 @@ const editImage = function() {
 }
 
 //生成-设计草图创作
-const prompt = ref("");
+
 const imageBlocks = ref([]); //瀑布流图片源
 const imgStyle = {           //瀑布流图片源样式
   width: '200px',
   'margin-right': '10px',
   'margin-bottom': '10px'
 }
-const route = useRoute();
-const { id } = route.query;
+
 const handleCreateStudioWorks = () => {
   if (!prompt.value) {
     ElMessage({
@@ -93,7 +81,7 @@ const handleCreateStudioWorks = () => {
     })
     return;
   }
-  loading.value = true;
+
   const params = {
     mainId: id,
     prompt: prompt.value,
@@ -114,7 +102,7 @@ const selectImage = (item) => {
     })
     return;
   }
-  loading.value = true;
+
   const params = {
     mainId: id,
     mainWorksId: imageId,
@@ -125,29 +113,22 @@ const selectImage = (item) => {
 }
 
 const createStudioWorksMethods = async (params) => {
-  //获取任务ID
+  let timer = null;
+  let loopTimer = 1000 * 3;
   const { id, total } = await getStudioProjectID(params);
-  //获取任务结果(轮询)
-  const timer = setInterval(async () => {
-    const { status, urls } = await getStudioProjectResult(id);
-    if (res.status === "FINISHED") {
-      clearInterval(timer);
-    }
-  }, 3000);
-
-
-
-
-  // FINISHED
-
-
-  // const res = await createStudioWorks(params);
-  // if (!imageBlocks.value.length) {
-  //   focusImageUrl.value = res[0].content.url;
-  //   splideImageList.value.push(res[0].content.url);
-  // }
-  // imageBlocks.value.push(...res);
-  // loading.value = false;
+  const { status, urls } = await getStudioProjectResult(id);
+  if (status !== "FINISHED") {
+    timer = setInterval(async () => {
+      const { status, urls } = await getStudioProjectResult(id);
+      if (status === "FINISHED") timer && clearInterval(timer);
+      //当没有历史图片
+      if (!historyImageBlocks.value.length) {
+        focusImageUrl.value = urls[0];
+        splideImageList.value.push(urls[0]);
+      }
+      imageBlocks.value = urls;
+    }, loopTimer)
+  }
 }
 
 //轮播图选择图片

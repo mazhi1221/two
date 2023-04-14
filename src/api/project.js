@@ -1,5 +1,13 @@
 import request from '../utils/https';
 
+//获取历史图片
+export const getHistoryImage = (params) =>
+  request({
+    method: "get",
+    url: "/api/studio/works",
+    params,
+  });
+
 //获取生成图片的任务ID
 export const getStudioProjectID = (data) =>
   request({

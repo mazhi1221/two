@@ -12,7 +12,7 @@ console.log(process.env.NODE_ENV)
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({reactivityTransform: true}),  //开启ref转换
     VueSetupExtend(),
     AutoImport({
       imports: ['vue', 'vue-router'],

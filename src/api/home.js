@@ -24,11 +24,11 @@ export const getSmsCode = (data) =>
     data,
   });
 
-//新建设计室
-export const createStudio = (data) =>
+//获取设计室列表
+export const getStudioList = (data) =>
   request({
-    method: "post",
-    url: "/api/studio/main",
+    method: "get",
+    url: "/api/studio/main/tpl",
     data,
   });
 
