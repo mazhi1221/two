@@ -8,6 +8,14 @@ export const getHistoryImage = (params) =>
     params,
   });
 
+//获取历史提示语
+export const getHistoryPrompt = (params) =>
+  request({
+    method: "get",
+    url: `/api/studio/prompt/${params.mainId}`,
+    params,
+  });
+
 //获取生成图片的任务ID
 export const getStudioProjectID = (data) =>
   request({

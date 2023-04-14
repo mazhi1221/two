@@ -3,8 +3,14 @@
     <div class="currentPicture">
       <div class="search">
         <img src="../../../assets/img/home_paint.svg" alt="">
-        <input type="text" v-model="prompt">
-        <div class="create" @click="handleCreateStudioWorks">创造</div>
+        <input type="text" placeholder="请一句话描述你想创作的图片" v-model="prompt">
+        <el-button
+          @click="handleCreateStudioWorks"
+          type="primary"
+          :loading-icon="Eleme"
+          :loading="loading">
+          {{ !loading ? '创造' : 'AI生成中...' }}
+        </el-button>
       </div>
       <div class="imgBox">
         <el-image
@@ -31,59 +37,55 @@
       <masonry-image
         class="masonry-image"
         :imageBlocks="generateImageList"
-        :imgStyle="imgStyle"
+        :imgStyle="{
+          width: '200px',
+          'margin-right': '10px',
+          'margin-bottom': '10px'
+        }"
         @selectImage="selectImage"
       />
     </div>
   </div>
 </template>
 <script setup name="designingScheme">
-import { getHistoryImage, getStudioProjectID, getStudioProjectResult } from "../../../api/project";
+import { getHistoryPrompt, getHistoryImage, getStudioProjectID, getStudioProjectResult } from "../../../api/project";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
+import { Eleme } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
 
 const { id: mainId } = useRoute().query; //工作室ID
 const prompt = ref("");            //生成图片提示信息
-let focusImageUrl = $ref("");     //聚焦图片地址
+let loading = $ref(false);
+let focusImageUrl = $ref("");      //聚焦图片地址
 let selectedImageList = $ref([]);  //选择的图片(轮播)
 let generateImageList = $ref([]);  //生成的图片(瀑布流)
 
 onMounted(async () => {
-  selectedImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "SELECTED" })
+  //获取最后一次提示信息
+  const prompt_ = await getHistoryPrompt({ mainId, type: "DESIGN" });
+  const { sourceContent = "" } = prompt_;
+  prompt.value = sourceContent;
+
+  //获取生成的历史图片
   generateImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "GENERATE" })
-  if (generateImageList.length) focusImageUrl = generateImageList[0]
+  if (generateImageList.length) focusImageUrl = generateImageList[0].content.url;
+
+  //获取选择的历史图片
+  const selectedImageList_ = await getHistoryImage({ mainId, type: "DESIGN", category: "SELECTED" })
+  selectedImageList = selectedImageList_.map(item => item.content.url);
 })
 
-//编辑图片功能
-const emit = defineEmits(['handleEditImage']);
-const editImage = function() {
-  const url = focusImageUrl.value;
-  emit("handleEditImage", url)
-}
-
 //生成-设计草图创作
-
-const imageBlocks = ref([]); //瀑布流图片源
-const imgStyle = {           //瀑布流图片源样式
-  width: '200px',
-  'margin-right': '10px',
-  'margin-bottom': '10px'
-}
-
 const handleCreateStudioWorks = () => {
   if (!prompt.value) {
-    ElMessage({
-      message: '描述信息不能为空.',
-      type: 'warning',
-    })
+    ElMessage({ message: '描述信息不能为空.', type: 'warning' })
     return;
   }
-
   const params = {
-    mainId: id,
+    mainId,
     prompt: prompt.value,
     type: "DESIGN"
   }
@@ -92,19 +94,15 @@ const handleCreateStudioWorks = () => {
 
 //选择瀑布流图片-生成-设计草图创作
 const selectImage = (item) => {
-  const { id: imageId, url } = item.content;
-  focusImageUrl.value = url;
-  splideImageList.value.push(url);
   if (!prompt.value) {
-    ElMessage({
-      message: '描述信息不能为空.',
-      type: 'warning',
-    })
+    ElMessage({ message: '描述信息不能为空.', type: 'warning' })
     return;
   }
-
+  const { id: imageId, url } = item.content;
+  focusImageUrl = url;
+  selectedImageList.push(url);
   const params = {
-    mainId: id,
+    mainId,
     mainWorksId: imageId,
     prompt: prompt.value,
     type: "DESIGN"
@@ -113,27 +111,42 @@ const selectImage = (item) => {
 }
 
 const createStudioWorksMethods = async (params) => {
+  loading = true;
   let timer = null;
   let loopTimer = 1000 * 3;
-  const { id, total } = await getStudioProjectID(params);
-  const { status, urls } = await getStudioProjectResult(id);
+  const { id } = await getStudioProjectID(params);
+  const { status, total } = await getStudioProjectResult(id);
   if (status !== "FINISHED") {
     timer = setInterval(async () => {
-      const { status, urls } = await getStudioProjectResult(id);
-      if (status === "FINISHED") timer && clearInterval(timer);
+      const { status, total, dataList } = await getStudioProjectResult(id);
       //当没有历史图片
-      if (!historyImageBlocks.value.length) {
-        focusImageUrl.value = urls[0];
-        splideImageList.value.push(urls[0]);
+      if (!generateImageList.length) {
+        focusImageUrl = dataList[0].content.url;
+        selectedImageList.push(dataList[0].content.url);
       }
-      imageBlocks.value = urls;
+      dataList.forEach(item_ => {
+        if (!generateImageList.filter(item => item.id === item_.id).length) {
+          generateImageList.push(item_)
+        }
+      })
+      if (status === "FINISHED") {
+        loading = false;
+        timer && clearInterval(timer);
+      }
     }, loopTimer)
   }
 }
 
+//编辑图片功能
+const emit = defineEmits(['handleEditImage']);
+const editImage = function() {
+  const url = focusImageUrl.value;
+  emit("handleEditImage", url)
+}
+
 //轮播图选择图片
 const handleSelectImage = (url) => {
-  focusImageUrl.value = url;
+  focusImageUrl = url;
 }
 </script>
 <style lang="scss" scoped>
@@ -163,7 +176,7 @@ div.designingScheme {
         left: 15px;
       }
       input {
-        width: calc(100% - 40px - 94px);
+        width: calc(100% - 40px - 110px);
         height: 40px;
         padding: 0 10px;
         outline-style: none;
@@ -174,11 +187,11 @@ div.designingScheme {
         font-size: 14px;
         color: #9C9A9A;
       }
-      div.create {
+      .el-button{
         position: absolute;
         top: 8px;
         right: 15px;
-        width: 79px;
+        width: 100px;
         height: 24px;
         line-height: 24px;
         text-align: center;
