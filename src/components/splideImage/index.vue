@@ -39,6 +39,8 @@ const options = {
   type: 'slide',
   rewind: true,
   height: "96px",
+  gap: "10px",
+  autoplay: true,
 }
 
 const route = useRoute();

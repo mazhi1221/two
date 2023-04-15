@@ -86,7 +86,7 @@ const save = () => {
 <style lang="scss" scoped>
 .drawing-container {
   height: 800px;
-  width: 800px;
+  width: 880px;
   margin: 0 auto;
   position: relative;
   .reset {
