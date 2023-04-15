@@ -43,7 +43,7 @@
       </div>
       <div class="rightContent">
         <designing-scheme v-if="activeMenu === '设计草图创作'" @handleEditImage="handleEditImage"/>
-        <line-drawing-generation v-if="activeMenu === '图片结构'"/>
+        <line-drawing-generation v-if="activeMenu === '图片结构'" @handleEditImage="handleEditImage"/>
         <design-inspiration v-if="activeMenu === '设计灵感'"/>
         <edit-image-dialog
           v-if="editImageDialogVisible"

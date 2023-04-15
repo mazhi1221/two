@@ -23,14 +23,23 @@ service.interceptors.request.use((config) => {
 
 // 返回响应数据拦截
 service.interceptors.response.use((res) => {
+  console.log("res", res);
   const { status, data } = res;
   if (status === 200) {
     return Promise.resolve(data);
   }
 }, (error) => {
+  console.log("error", error);
   if (error.response?.status) {
     // 状态码超过 2xx 范围时都会调用该函数，处理错误响应
     switch (error.response.status) {
+      case 401:
+        ElMessage({
+          type: 'error',
+          message: '登陆失效！',
+          showClose: true
+        });
+        break;
       case 404:
         ElMessage({
           type: 'error',

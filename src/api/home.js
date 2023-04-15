@@ -33,11 +33,10 @@ export const createStudio = (data) =>
   });
 
 //获取设计室列表
-export const getStudioList = (data) =>
+export const getStudioList = () =>
   request({
     method: "get",
     url: "/api/studio/main/tpl",
-    data,
   });
 
 

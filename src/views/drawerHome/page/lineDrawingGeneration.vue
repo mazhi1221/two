@@ -13,29 +13,28 @@
         </el-button>
       </div>
       <div class="imgBox">
+        <el-image
+          v-if="focusImageUrl"
+          :src="focusImageUrl"
+          fit="contain"
+        />
         <el-upload
           class="avatar-uploader"
-          drag
           action=""
           :show-file-list="false"
           :http-request="handleFileUpload"
         >
-          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-          <div class="el-upload__text">
-            Drop file here or <em>click to upload</em>
-          </div>
+          <el-button type="primary">
+            <el-icon class="el-icon--right"><Upload /></el-icon>
+          </el-button>
         </el-upload>
-<!--        <el-image-->
-<!--          v-if="focusImageUrl"-->
-<!--          :src="focusImageUrl"-->
-<!--          fit="contain"-->
-<!--        />-->
-<!--        <el-button-->
-<!--          v-if="focusImageUrl"-->
-<!--          @click="editImage"-->
-<!--          size="small">-->
-<!--          编辑图片-->
-<!--        </el-button>-->
+        <el-button
+          class="edit-image"
+          :icon="Edit"
+          v-if="focusImageUrl"
+          @click="editImage"
+          type="primary">
+        </el-button>
       </div>
       <div class="imgScroll">
         <splide-image
@@ -51,7 +50,9 @@
           <div class="imgBox">
             <img :src="item.content.url" alt="">
           </div>
-          <p :class="{active: structureNameActive === structureNameList[index]}">{{ structureNameList[index] }}</p>
+          <p :class="{active: structureValue === structureList[index].value}">
+            {{ structureList[index].name }}
+          </p>
         </li>
       </ul>
       <masonry-image
@@ -71,7 +72,7 @@
 import { getHistoryPrompt, getHistoryImage, getStudioProjectID, getStudioProjectResult, uploadStudioImage, getStructureStudioProject } from "../../../api/project";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
-import { Eleme, UploadFilled } from '@element-plus/icons-vue'
+import { Eleme, Upload, Edit } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
@@ -84,10 +85,33 @@ let selectedImageList = $ref([]);  //选择的图片(轮播)
 let generateImageList = $ref([]);  //生成的图片(瀑布流)
 
 let structureImageList = $ref([]);  //生成的结构图(6张)
-let structureNameList = ["线稿", "深度", "3D", "姿势和动作", "边缘", "直线"];         //生成的结构图名称
-let structureNameActive = $ref("线稿");
+//生成的结构图名称
+let structureList = [
+  { name: "线稿", value: "CANNY"},
+  { name: "深度", value: "DEPTH"},
+  { name: "3D", value: "NORMAL"},
+  { name: "姿势和动作", value: "OPENPOSE"},
+  { name: "边缘", value: "HED"},
+  { name: "直线", value: "MLSD"},
+];
+let structureValue = $ref("CANNY");
 
-//上传图片
+onMounted(async () => {
+  //获取最后一次提示信息
+  const prompt_ = await getHistoryPrompt({ mainId, type: "STRUCTURE" });
+  const { sourceContent = "" } = prompt_;
+  prompt.value = sourceContent;
+
+  //获取生成的历史图片
+  generateImageList = await getHistoryImage({ mainId, type: "STRUCTURE", category: "GENERATE" })
+  if (generateImageList.length) focusImageUrl = generateImageList[0].content.url;
+
+  //获取选择的历史图片
+  const selectedImageList_ = await getHistoryImage({ mainId, type: "STRUCTURE", category: "SELECTED" })
+  selectedImageList = selectedImageList_.map(item => item.content.url);
+})
+
+//上传图片-生成线稿图
 const handleFileUpload = ({file}) => {
   const params = {
     mainId,
@@ -97,31 +121,24 @@ const handleFileUpload = ({file}) => {
   }
   uploadStudioImage(params).then(async (res) => {
     const { id } = res;
+    focusImageUrl = res.content.url;
     structureImageList = await getStructureStudioProject({mainId, mainWorksId: id});
   })
 }
 
-const selectStructure = (item, index) => {
-  structureNameActive = structureNameList[index];
+//选择瀑布流图片-生成生成线稿图
+const selectImage = async (item) => {
+  focusImageUrl = item.content.url;
+  selectedImageList.push(item.content.url);
+  if (loading) return;
+
+  const { id } = item;
+  structureImageList = await getStructureStudioProject({mainId, mainWorksId: id});
 }
 
-//选择瀑布流图片-生成-设计草图创作
-const selectImage = (item) => {
-  if (!prompt.value) {
-    ElMessage({ message: '描述信息不能为空.', type: 'warning' })
-    return;
-  }
-  const index = structureNameList.findIndex(name => name === structureNameActive);
-  const { id: imageId, url } = structureImageList[index].content;
-  focusImageUrl = url;
-  selectedImageList.push(url);
-  const params = {
-    mainId,
-    mainWorksId: imageId,
-    prompt: prompt.value,
-    type: "STRUCTURE"
-  }
-  createStudioWorksMethods(params)
+const selectStructure = (item, index) => {
+  focusImageUrl = item.content.url;
+  structureValue = structureList[index].value;
 }
 
 //生成-结构图
@@ -130,12 +147,14 @@ const handleCreateStudioWorks = () => {
     ElMessage({ message: '描述信息不能为空.', type: 'warning' })
     return;
   }
-  const index = structureNameList.findIndex(name => name === structureNameActive);
+  const index = structureList.findIndex(item => item.value === structureValue);
   const { id: imageId, url } = structureImageList[index].content;
   const params = {
     mainId,
+    mainWorksId: imageId,
     prompt: prompt.value,
-    type: "STRUCTURE"
+    type: "STRUCTURE",
+    structureType: structureValue,
   }
   createStudioWorksMethods(params)
 }
@@ -167,34 +186,10 @@ const createStudioWorksMethods = async (params) => {
   }
 }
 
-
-
-onMounted(async () => {
-  //获取最后一次提示信息
-  const prompt_ = await getHistoryPrompt({ mainId, type: "DESIGN" });
-  const { sourceContent = "" } = prompt_;
-  prompt.value = sourceContent;
-
-  //获取生成的历史图片
-  generateImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "GENERATE" })
-  if (generateImageList.length) focusImageUrl = generateImageList[0].content.url;
-
-  //获取选择的历史图片
-  const selectedImageList_ = await getHistoryImage({ mainId, type: "DESIGN", category: "SELECTED" })
-  selectedImageList = selectedImageList_.map(item => item.content.url);
-})
-
-
-
-
-
-
-
 //编辑图片功能
 const emit = defineEmits(['handleEditImage']);
 const editImage = function() {
-  const url = focusImageUrl.value;
-  emit("handleEditImage", url)
+  emit("handleEditImage", focusImageUrl)
 }
 
 //轮播图选择图片
@@ -263,39 +258,9 @@ div.lineDrawingGeneration {
       border-radius: 20px;
       background: rgba(0 ,0 ,0, 0.1);
       position: relative;
-      .avatar-uploader {
-        width: 100%;
-        height: 100%;
-        display: block;
-        ::v-deep {
-          .el-upload {
-            width: 100%;
-            height: 100%;
-            border: 1px dashed var(--el-border-color);
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: var(--el-transition-duration-fast);
-            &:hover {
-              border-color: var(--el-color-primary);
-            }
-            .el-upload-dragger {
-              width: 100%;
-              height: 100%;
-              display: flex;
-              justify-content: center;
-              flex-direction: column;
-              align-items: center;
-            }
-            .el-icon.avatar-uploader-icon {
-              font-size: 28px;
-              color: #ffffff;
-              width: 100%;
-              height: 100%;
-              text-align: center;
-            }
-          }
+      &:hover {
+        .avatar-uploader, .edit-image {
+          opacity: 1;
         }
       }
       .el-image {
@@ -304,10 +269,31 @@ div.lineDrawingGeneration {
         display: block;
         border-radius: 20px;
       }
-      .el-button {
+      .avatar-uploader {
         position: absolute;
-        right: 15px;
-        bottom: 10px;
+        right: 60px;
+        bottom: 5px;
+        opacity: 0;
+        transition: opacity .35s linear;
+      }
+      .edit-image {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        opacity: 0;
+        transition: opacity .35s linear;
+      }
+      .el-button{
+        width: 50px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        border-radius: 20px;
+        background: #860AB8;
+        font-size: 12px;
+        font-weight: 900;
+        color: #FFFFFF;
+        cursor: pointer;
       }
     }
     div.imgScroll {

@@ -19,10 +19,11 @@
           fit="contain"
         />
         <el-button
+          class="edit-image"
+          :icon="Edit"
           v-if="focusImageUrl"
           @click="editImage"
-          size="small">
-          编辑图片
+          type="primary">
         </el-button>
       </div>
       <div class="imgScroll">
@@ -51,7 +52,7 @@
 import { getHistoryPrompt, getHistoryImage, getStudioProjectID, getStudioProjectResult } from "../../../api/project";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
-import { Eleme } from '@element-plus/icons-vue'
+import { Eleme, Edit } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
@@ -210,16 +211,35 @@ div.designingScheme {
       border-radius: 20px;
       background: rgba(0 ,0 ,0, 0.1);
       position: relative;
+      &:hover {
+        .edit-image {
+          opacity: 1;
+        }
+      }
       .el-image {
         width: 100%;
         height: 100%;
         display: block;
         border-radius: 20px;
       }
-      .el-button {
+      .edit-image {
         position: absolute;
-        right: 15px;
-        bottom: 10px;
+        right: 5px;
+        bottom: 5px;
+        opacity: 0;
+        transition: opacity .35s linear;
+      }
+      .el-button{
+        width: 50px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        border-radius: 20px;
+        background: #860AB8;
+        font-size: 12px;
+        font-weight: 900;
+        color: #FFFFFF;
+        cursor: pointer;
       }
     }
     div.imgScroll {

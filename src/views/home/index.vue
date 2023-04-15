@@ -33,7 +33,16 @@
         </div>
       </div>
       <div class="imgFlow">
-        <masonry-image />
+        <masonry-image
+          class="masonry-image"
+          :imageBlocks="studioList"
+          :imgStyle="{
+            width: '230px',
+            'margin-right': '10px',
+            'margin-bottom': '10px'
+          }"
+          @selectImage="selectImage"
+        />
       </div>
     </div>
     <login
@@ -51,7 +60,8 @@ import Login from "./components/login.vue";
 import CreateProject from "./components/createProject.vue";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { getStudioList } from "../../api/home";
+import { getItem } from "@/utils/storage";
 
 //登陆相关
 let loginDialogVisible = ref(false);
@@ -60,10 +70,33 @@ const loginBtnClick = () => {
 }
 
 //创建新项目相关
-const router = useRouter();
 let createDialogVisible = ref(false);
 const createBtnClick = () => {
   createDialogVisible.value = true;
+}
+
+//瀑布流相关
+let studioList = $ref([]);
+onMounted(async () => {
+  let studioList_ = await getStudioList();
+  studioList = studioList_.filter(item => {
+    return item.hasOwnProperty("content")
+  })
+})
+
+//点击瀑布流图片
+const router = useRouter();
+const selectImage = (item) => {
+  const authorization = getItem("authorization")
+  if (!authorization) {
+    loginBtnClick();
+    return;
+  }
+  const { id, name } = item;
+  router.push({
+    name: 'drawerHome',
+    query: { id, name }
+  })
 }
 
 </script>
@@ -80,9 +113,9 @@ div.home {
     >div.header {
       width: 100%;
       height: 64px;
-      margin-bottom: 100px;
       padding: 24px 27px 0;
       box-sizing: border-box;
+      margin-bottom: 100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
