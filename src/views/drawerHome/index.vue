@@ -46,6 +46,7 @@
         <line-drawing-generation v-if="activeMenu === '图片结构'"/>
         <design-inspiration v-if="activeMenu === '设计灵感'"/>
         <edit-image-dialog
+          v-if="editImageDialogVisible"
           :dialogVisible="editImageDialogVisible"
           :editImageDialogUrl="editImageDialogUrl"
           @handleCloseDialog="editImageDialogVisible = false;"/>

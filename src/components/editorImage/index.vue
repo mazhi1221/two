@@ -21,7 +21,6 @@ const props = defineProps({
 const imageEditor = ref(null);
 const initImageEditor = () => {
   const options = {
-    corsenabled: false,
     includeUI: {
       loadImage: {
         path: props.imageUrl,
@@ -33,8 +32,8 @@ const initImageEditor = () => {
       locale: locale_zh, // 本地化语言为中文
       theme: customTheme, // 自定义样式
     },
-    cssMaxWidth: 1000, // canvas 最大宽度
     cssMaxHeight: 600, // canvas 最大高度
+    cssMaxWidth: 800, // canvas 最大宽度
   };
   imageEditor.value = new ImageEditor('#tui-image-editor', options);
 
@@ -86,8 +85,8 @@ const save = () => {
 </script>
 <style lang="scss" scoped>
 .drawing-container {
-  height: 900px;
-  width: 1200px;
+  height: 800px;
+  width: 800px;
   margin: 0 auto;
   position: relative;
   .reset {

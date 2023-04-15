@@ -2,7 +2,8 @@
   <div class="editImageDialog">
     <el-dialog
       :model-value="dialogVisible"
-      width="80%"
+      top="50px"
+      width="1000"
       :before-close="handleCloseDialog"
     >
       <editor-image v-if="editImageDialogUrl" :imageUrl="editImageDialogUrl"/>
@@ -11,13 +12,13 @@
 </template>
 <script setup>
 import EditorImage from "@/components/editorImage/index.vue";
-import { reactive, ref, defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 
+const emit = defineEmits(['handleCloseDialog']);
 const props = defineProps({
   dialogVisible: Boolean,
   editImageDialogUrl: String,
 });
-const emit = defineEmits(['handleCloseDialog']);
 
 const handleCloseDialog = () => {
   emit("handleCloseDialog")

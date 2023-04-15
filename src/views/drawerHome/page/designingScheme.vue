@@ -110,6 +110,7 @@ const selectImage = (item) => {
   createStudioWorksMethods(params)
 }
 
+//轮询获取生成图片结果
 const createStudioWorksMethods = async (params) => {
   loading = true;
   let timer = null;
@@ -120,7 +121,7 @@ const createStudioWorksMethods = async (params) => {
     timer = setInterval(async () => {
       const { status, total, dataList } = await getStudioProjectResult(id);
       //当没有历史图片
-      if (!generateImageList.length) {
+      if (!generateImageList.length && dataList.length) {
         focusImageUrl = dataList[0].content.url;
         selectedImageList.push(dataList[0].content.url);
       }
@@ -140,8 +141,7 @@ const createStudioWorksMethods = async (params) => {
 //编辑图片功能
 const emit = defineEmits(['handleEditImage']);
 const editImage = function() {
-  const url = focusImageUrl.value;
-  emit("handleEditImage", url)
+  emit("handleEditImage", focusImageUrl)
 }
 
 //轮播图选择图片
