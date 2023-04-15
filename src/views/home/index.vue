@@ -5,7 +5,7 @@
         <div class="left">
           <img src="../../assets/img/home_logo.jpg" alt="">
           <img src="../../assets/img/home_logo_text.png" alt="">
-          <div class="btn active">主页</div>
+          <div class="btn">主页</div>
           <el-dropdown>
             <div class="btn">
               口袋<i class="el-icon-arrow-down el-icon--right"></i>
@@ -94,7 +94,7 @@ const selectImage = (item) => {
   }
   const { id, name } = item;
   router.push({
-    name: 'drawerHome',
+    name: 'studiosCreate',
     query: { id, name }
   })
 }
@@ -145,9 +145,6 @@ div.home {
           font-weight: 900;
           color: #4D4D4D;
           cursor: pointer;
-          &.active {
-            background: #FFFFFF;
-          }
         }
         div.search {
           width: 730px;

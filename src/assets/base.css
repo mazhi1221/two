@@ -111,12 +111,12 @@ body {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: rgba(16, 142, 233, 1);
+    background: #434343;
     /*background-image: linear-gradient(45deg, #ffbd61 25%,#ffbd61 25%, #ff8800 25%, #ff8800 50%,#ffbd61 50%, #ffbd61 75%, #ff8800 75%, #ff8800 100%)!important;*/
 }
 
 ::-webkit-scrollbar-button { /*滚动条上的按钮 (上下箭头)*/
-    background: #108EE9;
+    background: #434343;
     display: none;
 }
 
@@ -125,15 +125,15 @@ body {
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    background: rgba(255, 255, 255, 0);
+    background: #141414;
 }
 
 ::-webkit-scrollbar-track-piece { /*滚动条没有滑块的轨道部分*/
-    background: rgba(255, 255, 255, 0.8);
+    background: #141414;
 }
 
 ::-webkit-scrollbar-corner { /*当同时有垂直滚动条和水平滚动条时交汇的部分*/
-    background: #1b2235;
+    background: #141414;
 }
 
 ::-webkit-resizer {

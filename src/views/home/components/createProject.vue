@@ -56,7 +56,7 @@ const handleCreate = (createFormRef) => {
         const { id, name, createBy, createTime } = res;
         handleCloseDialog();
         router.push({
-          name: 'drawerHome',
+          name: 'studiosCreate',
           query: { id, name }
         })
         ElMessage({

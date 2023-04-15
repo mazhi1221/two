@@ -2,13 +2,13 @@
   <div class="drawerHome">
     <div class="header">
       <div class="left">
-        <img src="../../assets/img/drawer_home_logo.svg" alt="">
+        <span class="iconfont icon-shouye"></span>
         <span class="pageName">{{ activeMenu }}</span>
         <span class="projectName">{{ name}}</span>
       </div>
       <div class="right">
         <el-badge :value="12" class="item">
-          <img class="message" src="../../assets/img/home_message.svg" alt="">
+          <span class="iconfont icon-xiaoxi"></span>
         </el-badge>
         <el-switch
           v-model="themeMode"
@@ -108,9 +108,10 @@ div.drawerHome {
       display: flex;
       justify-content: start;
       align-items: center;
-      img {
-        width: 25px;
-        height: 25px;
+      span.iconfont {
+        font-size: 18px;
+        font-weight: 500;
+        color: #FFFFFF;
         margin-right: 5px;
       }
       span.pageName {
@@ -130,11 +131,11 @@ div.drawerHome {
       display: flex;
       justify-content: start;
       align-items: center;
-      img.message {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        margin-top: 5px;
+      span.iconfont {
+        font-size: 18px;
+        font-weight: 500;
+        color: #FFFFFF;
+        margin-right: 5px;
       }
       .themeMode {
         margin: 0 20px;

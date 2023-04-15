@@ -65,6 +65,10 @@ const handleSelectImage = (url) => {
 .splideImage {
   height: 100%;
   ::v-deep {
+    .splide__slide {
+      display: flex;
+      align-items: center;
+    }
     .splide__arrows {
       position: absolute;
       top: 0; bottom: 0;
@@ -73,7 +77,7 @@ const handleSelectImage = (url) => {
     }
   }
   img {
-    height: 100%;
+    width: 100%;
     cursor: pointer;
   }
   .avatar-uploader {
