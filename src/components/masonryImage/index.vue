@@ -7,6 +7,10 @@
           :style="imgStyle"
           @click="selectImage(item)"
         >
+        <p v-if="showInfo">
+          <span>{{ item.name}}</span>
+          <span>{{ item.createTime.substr(0, 10) }}</span>
+        </p>
       </div>
     </div>
   </div>
@@ -18,6 +22,10 @@ const emit = defineEmits(['selectImage'])
 const props = defineProps({
   imageBlocks: Array,
   imgStyle: Object,
+  showInfo: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const selectImage = (item) => {
@@ -30,6 +38,17 @@ div.masonryImage {
   img {
     border-radius: 20px;
     cursor: pointer;
+  }
+  p {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
   }
 }
 </style>

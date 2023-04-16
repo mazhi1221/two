@@ -7,17 +7,9 @@
         <span class="projectName">{{ name}}</span>
       </div>
       <div class="right">
-        <el-badge :value="12" class="item">
+        <el-badge :value="0" class="item">
           <span class="iconfont icon-xiaoxi"></span>
         </el-badge>
-        <el-switch
-          v-model="themeMode"
-          class="themeMode"
-          size="large"
-          inline-prompt
-          :active-icon="Sunny"
-          :inactive-icon="Moon"
-        />
         <img class="author" src="../../assets/img/home_logo.jpg" alt="">
       </div>
     </div>
@@ -58,33 +50,30 @@
 import DesigningScheme from './page/designingScheme.vue'
 import LineDrawingGeneration  from './page/lineDrawingGeneration.vue'
 import DesignInspiration  from './page/designInspiration.vue'
-
 import EditImageDialog from './components/editImageDialog.vue'
-import { Sunny, Moon } from '@element-plus/icons-vue'
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
-
-const themeMode = ref(true)
 
 //口袋名称相关
 const route = useRoute();
 const { name } = route.query;
 
 //侧栏菜单相关
+let isCollapse = ref(true);
+const activeMenu = ref('设计草图创作');
 const menuList = ref([
   { name: "设计草图创作", icon: "icon-sharpicons_stylus" },
   { name: "图片结构", icon: "icon-sharpicons_files" },
   { name: "设计灵感", icon: "icon-sharpicons_pen" },
 ])
-const isCollapse = ref(true);
-const activeMenu = ref('设计草图创作');
 const handleClickMenu = (item) => {
   activeMenu.value = item.name;
 }
 
 let editImageDialogVisible = ref(false);
 let editImageDialogUrl = ref("");
-const handleEditImage = (url) => {
+const handleEditImage = (item) => {
+  const { id, focusImageUrl } = item;
   editImageDialogUrl.value = url;
   editImageDialogVisible.value = true;
 }
@@ -137,13 +126,11 @@ div.drawerHome {
         color: #FFFFFF;
         margin-right: 5px;
       }
-      .themeMode {
-        margin: 0 20px;
-      }
       img.author {
         width: 40px;
         height: 40px;
         cursor: pointer;
+        margin-left: 25px;
       }
     }
   }

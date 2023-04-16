@@ -47,3 +47,11 @@ export const getStructureStudioProject = (data) =>
     url: "/api/studio/works/structure",
     data,
   });
+
+//查询设计师列表
+export const getMyStudioProject = (params) =>
+  request({
+    method: "get",
+    url: "/api/studio/main",
+    params,
+  });

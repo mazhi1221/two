@@ -6,6 +6,7 @@
           <img src="../../assets/img/home_logo.jpg" alt="">
           <img src="../../assets/img/home_logo_text.png" alt="">
           <div class="btn">主页</div>
+          <div class="btn" @click="dumpMyStudio">我的口袋</div>
           <el-dropdown>
             <div class="btn">
               口袋<i class="el-icon-arrow-down el-icon--right"></i>
@@ -96,6 +97,13 @@ const selectImage = (item) => {
   router.push({
     name: 'studiosCreate',
     query: { id, name }
+  })
+}
+
+//我的工作室
+const dumpMyStudio = () => {
+  router.push({
+    name: 'studiosManage',
   })
 }
 

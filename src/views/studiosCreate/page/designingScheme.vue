@@ -149,7 +149,10 @@ const createStudioWorksMethods = async (params) => {
 //编辑图片功能
 const emit = defineEmits(['handleEditImage']);
 const editImage = function() {
-  emit("handleEditImage", focusImageUrl)
+  const id = generateImageList.filter(item => {
+    return item.content.url === focusImageUrl;
+  })[0].id;
+  emit("handleEditImage", { id, focusImageUrl });
 }
 
 //轮播图选择图片
