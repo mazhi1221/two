@@ -83,8 +83,10 @@ const handleLogin = (loginFormRef) => {
         })
         handleCloseDialog();
         //设置token;
-        const { token } = res;
+        const { token, user } = res;
+        const { user: userInfo } = user;
         userStore.setToken(token);
+        userStore.setUserInfo(userInfo);
       })
     }
   })

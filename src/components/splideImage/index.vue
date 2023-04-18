@@ -8,17 +8,15 @@
           @click="handleSelectImage(item)"
         >
       </SplideSlide>
-      <SplideSlide>
-        <el-upload
-          class="avatar-uploader"
-          action=""
-          :show-file-list="false"
-          :http-request="handleFileUpload"
-        >
-          <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
-        </el-upload>
-      </SplideSlide>
     </Splide>
+    <el-upload
+      class="avatar-uploader"
+      action=""
+      :show-file-list="false"
+      :http-request="handleFileUpload"
+    >
+      <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+    </el-upload>
   </div>
 </template>
 <script setup>
@@ -40,7 +38,6 @@ const options = {
   rewind: true,
   height: "96px",
   gap: "10px",
-  autoplay: true,
 }
 
 const route = useRoute();
@@ -66,6 +63,8 @@ const handleSelectImage = (url) => {
 <style lang="scss" scoped>
 .splideImage {
   height: 100%;
+  display: flex;
+  justify-content: space-between;
   ::v-deep {
     .splide__slide {
       display: flex;

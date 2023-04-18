@@ -2,18 +2,32 @@
   <div class="studiosManage">
     <div class="header">
       <div class="left">
-        <span class="iconfont icon-shouye"></span>
+        <span class="iconfont icon-shouye" @click="dumpHome"></span>
         <span class="pageName">我的口袋</span>
       </div>
       <div class="right">
         <el-badge :value="12" class="item">
           <span class="iconfont icon-xiaoxi"></span>
         </el-badge>
-        <img class="author" src="../../assets/img/home_logo.jpg" alt="">
+        <avatar/>
       </div>
     </div>
     <div class="content">
-      <img class="Heads" src="../../assets/img/home_logo.jpg" alt="">
+      <div class="Heads">
+        <el-avatar
+          :size="120"
+          :src="userStore.userInfo.avatarPath"
+        />
+        <el-upload
+          class="avatar-uploader"
+          action=""
+          :show-file-list="false"
+          :before-upload="handleBeforeUpload"
+          :http-request="handleFileUpload"
+        >
+          <div class="upload"></div>
+        </el-upload>
+      </div>
       <p class="author">
         <span>test</span>
       </p>
@@ -47,8 +61,15 @@
 <script setup>
 import MasonryImage from "@/components/masonryImage/index.vue";
 import { getMyStudioProject } from "../../api/project";
+import { uploadUserAvatar } from "../../api/user";
+import Avatar from "@/components/avatar/index.vue";
+import { ElMessage } from 'element-plus';
+import { useUserStore } from "../../stores/user";
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
+
+//状态管理
+const userStore = useUserStore();
 
 let myStudiosList = $ref([]);
 let collectStudiosList = $ref([]);
@@ -86,6 +107,33 @@ const selectImage = (item) => {
     query: { id, name }
   })
 }
+
+const dumpHome = () => {
+  router.push({
+    name: 'home',
+  })
+}
+
+const handleBeforeUpload = (file) => {
+  const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
+  const whiteList = ["gif", "jpg", "png", "jpeg"];
+  if (whiteList.indexOf(fileSuffix.toLowerCase()) === -1) {
+    ElMessage.error('文件格式错误！,仅支持 gif jpg png jpeg 格式');
+    return false;
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    ElMessage.error('上传头像图片大小不能超过 2MB!');
+    return false;
+  }
+}
+
+const handleFileUpload = ({file}) => {
+  uploadUserAvatar({ avatar: file }).then(res => {
+    const { avatarUrl } = res;
+    userStore.setAvatarUrl(avatarUrl);
+  })
+}
 </script>
 <style lang="scss" scoped>
 div.studiosManage {
@@ -111,6 +159,7 @@ div.studiosManage {
         font-weight: 500;
         color: #FFFFFF;
         margin-right: 5px;
+        cursor: pointer;
       }
       span.pageName {
         font-size: 18px;
@@ -130,12 +179,6 @@ div.studiosManage {
         color: #FFFFFF;
         margin-right: 5px;
       }
-      img.author {
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        margin-left: 25px;
-      }
     }
   }
   >div.content {
@@ -145,13 +188,24 @@ div.studiosManage {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    img.Heads {
+    div.Heads {
       width: 120px;
       height: 120px;
-      border-radius: 50%;
-      display: block;
       margin: 0 auto;
       margin-top: 20px;
+      position: relative;
+      .avatar-uploader {
+        width: 120px;
+        height: 120px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        div.upload {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+        }
+      }
     }
     p.author {
       height: 20px;
@@ -184,6 +238,8 @@ div.studiosManage {
     .studioArea {
       flex: 1;
       overflow: auto;
+      padding: 0 110px;
+      box-sizing: border-box;
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="drawerHome">
     <div class="header">
       <div class="left">
-        <span class="iconfont icon-shouye"></span>
+        <span class="iconfont icon-shouye" @click="dumpHome"></span>
         <span class="pageName">{{ activeMenu }}</span>
         <span class="projectName">{{ name}}</span>
       </div>
@@ -10,7 +10,7 @@
         <el-badge :value="0" class="item">
           <span class="iconfont icon-xiaoxi"></span>
         </el-badge>
-        <img class="author" src="../../assets/img/home_logo.jpg" alt="">
+        <avatar/>
       </div>
     </div>
     <div class="content">
@@ -51,8 +51,13 @@ import DesigningScheme from './page/designingScheme.vue'
 import LineDrawingGeneration  from './page/lineDrawingGeneration.vue'
 import DesignInspiration  from './page/designInspiration.vue'
 import EditImageDialog from './components/editImageDialog.vue'
+import Avatar from "@/components/avatar/index.vue";
+import { useUserStore } from "../../stores/user";
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
+
+//状态管理
+const userStore = useUserStore();
 
 //口袋名称相关
 const route = useRoute();
@@ -74,8 +79,15 @@ let editImageDialogVisible = ref(false);
 let editImageDialogUrl = ref("");
 const handleEditImage = (item) => {
   const { id, focusImageUrl } = item;
-  editImageDialogUrl.value = url;
+  editImageDialogUrl.value = focusImageUrl;
   editImageDialogVisible.value = true;
+}
+
+const router = useRouter();
+const dumpHome = () => {
+  router.push({
+    name: 'home',
+  })
 }
 </script>
 <style lang="scss" scoped>
@@ -102,6 +114,7 @@ div.drawerHome {
         font-weight: 500;
         color: #FFFFFF;
         margin-right: 5px;
+        cursor: pointer;
       }
       span.pageName {
         font-size: 18px;
@@ -125,12 +138,6 @@ div.drawerHome {
         font-weight: 500;
         color: #FFFFFF;
         margin-right: 5px;
-      }
-      img.author {
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        margin-left: 25px;
       }
     }
   }

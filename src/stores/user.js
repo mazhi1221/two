@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
-import { setItem, getItem } from "@/utils/storage";
+import { setItem, getItem, removeItem } from "@/utils/storage";
 
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
       token: getItem("authorization") || "",
+      userInfo: getItem("userInfo") || {},
     }
   },
   getters: {
@@ -12,20 +13,23 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     logout() {
-      this.$patch({
-        token: '',
-      })
+      this.$patch({ token: '' });
+      removeItem("authorization");
     },
-    // async login(user, password) {
-    //   const userData = await apiLogin(user, password)
-    //   this.$patch({
-    //     name: user,
-    //     ...userData,
-    //   })
-    // },
     setToken(token) {
       this.token = token;
       setItem("authorization", 'Bearer ' + token)
     },
+    setUserInfo(userInfo) {
+      this.userInfo = userInfo;
+      setItem("userInfo", userInfo)
+    },
+    setAvatarUrl(avatarUrl) {
+      this.userInfo = {
+        ...this.userInfo,
+        avatarPath: avatarUrl,
+      };
+      setItem("userInfo", userInfo)
+    }
   },
 })

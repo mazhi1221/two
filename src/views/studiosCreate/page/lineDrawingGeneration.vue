@@ -25,7 +25,7 @@
           :http-request="handleFileUpload"
         >
           <el-button type="primary">
-            <el-icon class="el-icon--right"><Upload /></el-icon>
+            <el-icon><Upload /></el-icon>
           </el-button>
         </el-upload>
         <el-button
@@ -278,17 +278,17 @@ div.lineDrawingGeneration {
       }
       .edit-image {
         position: absolute;
-        right: 60px;
+        right: 48px;
         bottom: 5px;
         opacity: 0;
         transition: opacity .35s linear;
       }
       .el-button{
-        width: 50px;
-        height: 24px;
-        line-height: 24px;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
         text-align: center;
-        border-radius: 20px;
+        border-radius: 50%;
         background: #860AB8;
         font-size: 12px;
         font-weight: 900;

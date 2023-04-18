@@ -3,19 +3,17 @@
     <div class="home_contain">
       <div class="header">
         <div class="left">
-          <img src="../../assets/img/home_logo.jpg" alt="">
-          <img src="../../assets/img/home_logo_text.png" alt="">
-          <div class="btn">主页</div>
-          <div class="btn" @click="dumpMyStudio">我的口袋</div>
+          <img src="../../assets/img/home_logo.png" alt="">
+          <div class="btn active">主页</div>
           <el-dropdown>
-            <div class="btn">
-              口袋<i class="el-icon-arrow-down el-icon--right"></i>
-            </div>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>创建新口袋</el-dropdown-item>
-              <el-dropdown-item>我的口袋</el-dropdown-item>
-              <el-dropdown-item>学习我的画风</el-dropdown-item>
-            </el-dropdown-menu>
+            <div class="btn">口袋</div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>创建新口袋</el-dropdown-item>
+                <el-dropdown-item @click="dumpMyStudio">我的口袋</el-dropdown-item>
+                <el-dropdown-item>学习我的画风</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
           </el-dropdown>
           <div class="search">
             <img src="../../assets/img/home_paint.svg" alt="">
@@ -24,13 +22,11 @@
           </div>
         </div>
         <div class="right">
-          <div class="btn login active" @click="loginBtnClick">登陆</div>
-          <div class="btn register">注册</div>
-        </div>
-      </div>
-      <div class="bigIcon">
-        <div>
-          <img src="../../assets/img/home_big_log.png" alt="">
+          <avatar v-if="userStore.token"/>
+          <template v-else>
+            <div class="btn login active" @click="loginBtnClick">登陆</div>
+            <div class="btn register">注册</div>
+          </template>
         </div>
       </div>
       <div class="imgFlow">
@@ -42,7 +38,7 @@
             'margin-right': '10px',
             'margin-bottom': '10px'
           }"
-          @selectImage="selectImage"
+          @selectImage="detailBtnClick"
         />
       </div>
     </div>
@@ -54,15 +50,26 @@
       :dialogVisible="createDialogVisible"
       @handleCloseDialog="createDialogVisible = false;"
     />
+    <studio-detail
+      :dialogVisible="detailDialogVisible"
+      :detailDialogData="detailDialogData"
+      @handleCloseDialog="detailDialogVisible = false;"
+    />
   </div>
 </template>
 <script setup>
 import Login from "./components/login.vue";
 import CreateProject from "./components/createProject.vue";
+import StudioDetail from "./components/studioDetail.vue";
 import MasonryImage from "@/components/masonryImage/index.vue";
+import Avatar from "@/components/avatar/index.vue";
 import { ref, onMounted } from 'vue';
 import { getStudioList } from "../../api/home";
 import { getItem } from "@/utils/storage";
+import { useUserStore } from "../../stores/user";
+
+//状态管理
+const userStore = useUserStore();
 
 //登陆相关
 let loginDialogVisible = ref(false);
@@ -76,6 +83,18 @@ const createBtnClick = () => {
   createDialogVisible.value = true;
 }
 
+//查看详情相关
+let detailDialogVisible = ref(false);
+let detailDialogData = ref({});
+const detailBtnClick = (item) => {
+  if (!userStore.token) {
+    loginBtnClick();
+    return;
+  }
+  detailDialogData = item;
+  detailDialogVisible.value = true;
+}
+
 //瀑布流相关
 let studioList = $ref([]);
 onMounted(async () => {
@@ -84,21 +103,6 @@ onMounted(async () => {
     return item.hasOwnProperty("content")
   })
 })
-
-//点击瀑布流图片
-const router = useRouter();
-const selectImage = (item) => {
-  const authorization = getItem("authorization")
-  if (!authorization) {
-    loginBtnClick();
-    return;
-  }
-  const { id, name } = item;
-  router.push({
-    name: 'studiosCreate',
-    query: { id, name }
-  })
-}
 
 //我的工作室
 const dumpMyStudio = () => {
@@ -116,12 +120,10 @@ div.home {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   >div.home_contain {
-    width: 1440px;
-    margin: 0 auto;
     >div.header {
       width: 100%;
       height: 64px;
-      padding: 24px 27px 0;
+      padding: 32px 27px 0;
       box-sizing: border-box;
       margin-bottom: 100px;
       display: flex;
@@ -132,15 +134,9 @@ div.home {
         justify-content: start;
         align-items: center;
         img:first-child {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
+          width: 110px;
+          height: 32px;
           margin-right: 15px;
-        }
-        img:nth-child(2) {
-          width: 41px;
-          height: 34px;
-          margin-right: 45px;
         }
         div.btn {
           width: 66px;
@@ -153,6 +149,9 @@ div.home {
           font-weight: 900;
           color: #4D4D4D;
           cursor: pointer;
+          &.active {
+            background: #fff;
+          }
         }
         div.search {
           width: 730px;
@@ -197,15 +196,15 @@ div.home {
         }
       }
       >div.right {
-        height: 40px;
+        height: 32px;
         display: flex;
         justify-content: start;
         align-items: center;
         div.btn {
           width: 58px;
-          height: 34px;
+          height: 32px;
           border-radius: 20px;
-          line-height: 34px;
+          line-height: 32px;
           text-align: center;
           font-size: 12px;
           font-weight: 900;
@@ -221,13 +220,10 @@ div.home {
         }
       }
     }
-    >div.bigIcon {
-      margin-bottom: 50px;
-      div {
-        text-align: center;
-      }
+    >div.imgFlow {
+      padding: 0 110px;
+      box-sizing: border-box;
     }
-    >div.imgFlow {}
   }
 }
 </style>
