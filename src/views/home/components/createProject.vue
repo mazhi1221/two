@@ -37,10 +37,13 @@ import { createStudio } from '../../../api/home';
 import { useRouter } from 'vue-router';
 
 //定义组件属性
-const props = defineProps({ dialogVisible: Boolean})
+const props = defineProps({
+  dialogVisible: Boolean,
+  defaultPrompt: String,
+})
 const emit = defineEmits(['handleCloseDialog'])
 const createFormRef = ref()
-const createForm = reactive({ name: '' })
+const createForm = reactive({ name: '默认' })
 const rules = reactive({
   name: [{ required: true, message: '请输入口袋名称', trigger: 'blur' }],
 })
@@ -57,7 +60,7 @@ const handleCreate = (createFormRef) => {
         handleCloseDialog();
         router.push({
           name: 'studiosCreate',
-          query: { id, name }
+          query: { id, name, prompt: props.defaultPrompt }
         })
         ElMessage({
           message: '创建成功！',

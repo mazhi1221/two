@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 import { getItem, removeItem } from "@/utils/storage";
-import { useRouter } from 'vue-router';
+import { useUserStore } from "../stores/user"
 
-const router = useRouter();
+const userStore = useUserStore();
 
 let service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -42,8 +42,7 @@ service.interceptors.response.use((res) => {
           message: '登陆失效！',
           showClose: true
         });
-        router.push({ name: 'home' });
-        removeItem("authorization");
+        userStore.logout();
         break;
       case 404:
         ElMessage({

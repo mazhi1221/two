@@ -55,3 +55,20 @@ export const getMyStudioProject = (params) =>
     url: "/api/studio/main",
     params,
   });
+
+//我的画风-添加
+export const addMyStyle = (data) =>
+  request({
+    method: "post",
+    url: "/api/user/style",
+    data,
+    headers: {'Content-Type': 'multipart/form-data'}
+  });
+
+//我的画风-列表
+export const getMyStyle = (params) =>
+  request({
+    method: "get",
+    url: "/api/user/style",
+    params,
+  });

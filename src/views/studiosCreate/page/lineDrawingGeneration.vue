@@ -148,7 +148,7 @@ const handleCreateStudioWorks = () => {
     return;
   }
   const index = structureList.findIndex(item => item.value === structureValue);
-  const { id: imageId, url } = structureImageList[index].content;
+  const { id: imageId, url } = structureImageList[index];
   const params = {
     mainId,
     mainWorksId: imageId,

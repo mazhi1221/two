@@ -59,7 +59,7 @@ import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
 
-const { id: mainId } = useRoute().query; //工作室ID
+const { id: mainId, prompt: defaultPrompt } = useRoute().query; //工作室ID
 const prompt = ref("");            //生成图片提示信息
 let loading = $ref(false);
 let focusImageUrl = $ref("");      //聚焦图片地址
@@ -71,7 +71,7 @@ onMounted(async () => {
   //获取最后一次提示信息
   const prompt_ = await getHistoryPrompt({ mainId, type: "DESIGN" });
   const { sourceContent = "" } = prompt_;
-  prompt.value = sourceContent;
+  prompt.value = sourceContent || defaultPrompt;
 
   //获取生成的历史图片
   generateImageList = await getHistoryImage({ mainId, type: "DESIGN", category: "GENERATE" })

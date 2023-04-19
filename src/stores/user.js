@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { setItem, getItem, removeItem } from "@/utils/storage";
+import router from '../router'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -13,8 +14,13 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     logout() {
-      this.$patch({ token: '' });
+      this.$patch({
+        token: '',
+        userInfo: {},
+      });
       removeItem("authorization");
+      removeItem("userInfo");
+      router.push({ name: 'home' })
     },
     setToken(token) {
       this.token = token;

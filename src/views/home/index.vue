@@ -17,7 +17,7 @@
           </el-dropdown>
           <div class="search">
             <img src="../../assets/img/home_paint.svg" alt="">
-            <input type="text">
+            <input type="text" v-model="prompt">
             <div class="create" @click="createBtnClick">创造</div>
           </div>
         </div>
@@ -47,6 +47,7 @@
       @handleCloseDialog="loginDialogVisible = false;"
     />
     <create-project
+      :defaultPrompt="prompt"
       :dialogVisible="createDialogVisible"
       @handleCloseDialog="createDialogVisible = false;"
     />
@@ -65,8 +66,8 @@ import MasonryImage from "@/components/masonryImage/index.vue";
 import Avatar from "@/components/avatar/index.vue";
 import { ref, onMounted } from 'vue';
 import { getStudioList } from "../../api/home";
-import { getItem } from "@/utils/storage";
 import { useUserStore } from "../../stores/user";
+import { useRouter } from 'vue-router';
 
 //状态管理
 const userStore = useUserStore();
@@ -78,6 +79,7 @@ const loginBtnClick = () => {
 }
 
 //创建新项目相关
+let prompt = $ref("");
 let createDialogVisible = ref(false);
 const createBtnClick = () => {
   createDialogVisible.value = true;
@@ -105,6 +107,7 @@ onMounted(async () => {
 })
 
 //我的工作室
+const router = useRouter();
 const dumpMyStudio = () => {
   router.push({
     name: 'studiosManage',
@@ -130,6 +133,7 @@ div.home {
       justify-content: space-between;
       align-items: center;
       >div.left {
+        flex: 1;
         display: flex;
         justify-content: start;
         align-items: center;
@@ -154,7 +158,7 @@ div.home {
           }
         }
         div.search {
-          width: 730px;
+          flex: 1;
           height: 40px;
           border-radius: 20px;
           background: #FFFFFF;
@@ -167,7 +171,7 @@ div.home {
             left: 15px;
           }
           input {
-            width: 575px;
+            width: calc(100% - 40px - 100px);
             height: 40px;
             padding: 0 10px;
             outline-style: none;

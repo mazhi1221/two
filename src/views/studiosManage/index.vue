@@ -40,44 +40,67 @@
         >{{ item.name }}</li>
       </ul>
       <div class="studioArea">
-        <masonry-image
-          v-if="activeQueryType === 'MINE'"
-          class="masonry-image"
-          :imageBlocks="myStudiosList"
-          :showInfo="true"
-          :imgStyle="{
+        <template v-if="activeQueryType === 'MINE'">
+          <div class="extraContain">
+            <el-tag>未区分口袋</el-tag>
+          </div>
+          <masonry-image
+            class="masonry-image"
+            :imageBlocks="myStudiosList"
+            :showInfo="true"
+            :imgStyle="{
             width: '200px',
             'margin-right': '10px',
           }"
-          @selectImage="selectImage"
-        />
-        <el-empty
-          v-if="activeQueryType === 'COLLECT'"
-          description="description" />
+            @selectImage="selectImage"
+          />
+        </template>
+        <template v-if="activeQueryType === 'COLLECT'">
+          <div class="extraContain">
+            <el-tag>未区分口袋</el-tag>
+          </div>
+          <el-empty description="description" />
+        </template>
+        <template v-if="activeQueryType === 'paintingStyle'">
+          <div class="extraContain">
+            <el-upload
+              class="avatar-uploader"
+              action=""
+              :show-file-list="false"
+              :http-request="handleFileUploadType"
+            >
+              <el-button type="primary">上传图片</el-button>
+            </el-upload>
+          </div>
+          <ul class="paintingStyleContent">
+            <li v-for="item in paintingStyleList" :key="item.id">
+              <img :src="item.content.url" alt="">
+            </li>
+          </ul>
+        </template>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import MasonryImage from "@/components/masonryImage/index.vue";
-import { getMyStudioProject } from "../../api/project";
-import { uploadUserAvatar } from "../../api/user";
 import Avatar from "@/components/avatar/index.vue";
 import { ElMessage } from 'element-plus';
 import { useUserStore } from "../../stores/user";
-import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { addMyStyle, getMyStyle, getMyStudioProject, uploadStudioImage } from "../../api/project";
+import { uploadUserAvatar } from "../../api/user";
 
-//状态管理
 const userStore = useUserStore();
 
-let myStudiosList = $ref([]);
-let collectStudiosList = $ref([]);
 let queryTypeList = $ref([
   { name: "我的口袋", value: "MINE" },
   { name: "收藏的口袋", value: "COLLECT" },
+  { name: "我的画风", value: "paintingStyle" },
 ])
 let activeQueryType = $ref("MINE")
+let myStudiosList = $ref([]);
+let collectStudiosList = $ref([]);
+let paintingStyleList = $ref([]);
 
 onMounted(async () => {
   //我的设计室列表
@@ -96,6 +119,9 @@ onMounted(async () => {
 
   //收藏的设计室列表
   collectStudiosList = await getMyStudioProject({ queryType: "COLLECT" })
+
+  //我的画风
+  paintingStyleList = await getMyStyle();
 })
 
 //点击瀑布流图片
@@ -128,10 +154,19 @@ const handleBeforeUpload = (file) => {
   }
 }
 
+//更新头像
 const handleFileUpload = ({file}) => {
   uploadUserAvatar({ avatar: file }).then(res => {
     const { avatarUrl } = res;
     userStore.setAvatarUrl(avatarUrl);
+  })
+}
+
+//上传画风
+const handleFileUploadType = ({file}) => {
+  const params = { file: file };
+  addMyStyle(params).then(res => {
+    console.log(res);
   })
 }
 </script>
@@ -209,13 +244,13 @@ div.studiosManage {
     }
     p.author {
       height: 20px;
-      margin-top: 20px;
       line-height: 20px;
+      margin-top: 20px;
       text-align: center;
       color: #fff;
     }
     ul.tab {
-      width: 200px;
+      width: 280px;
       height: 20px;
       margin: 0 auto;
       margin-top: 20px;
@@ -224,9 +259,16 @@ div.studiosManage {
       justify-content: space-between;
       align-items: center;
       li {
+        text-align: center;
         flex-basis: 100px;
         color: #fff;
         cursor: pointer;
+        &:first-child {
+          text-align: left;
+        }
+        &:last-child {
+          text-align: right;
+        }
         &.active {
           color: red;
         }
@@ -237,9 +279,33 @@ div.studiosManage {
     }
     .studioArea {
       flex: 1;
-      overflow: auto;
       padding: 0 110px;
       box-sizing: border-box;
+      overflow: hidden;
+      div.extraContain {
+        height: 20px;
+        margin-bottom: 20px;
+      }
+      div.masonry-image {
+        height: calc(100% - 40px);
+        overflow: auto;
+      }
+      ul.paintingStyleContent {
+        overflow: hidden;
+        li {
+          width: 267px;
+          height: 267px;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          float: left;
+          border-radius: 20px;
+          img {
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
     }
   }
 }
