@@ -39,6 +39,7 @@
       <div class="imgScroll">
         <splide-image
           v-if="selectedImageList.length"
+          type="STRUCTURE"
           :splideImageList="selectedImageList"
           @handleSelectImage="handleSelectImage"
         />

@@ -26,7 +26,10 @@ import { Plus } from '@element-plus/icons-vue'
 import { ref, defineEmits, defineProps } from 'vue';
 import { useRoute } from 'vue-router';
 
-const props = defineProps({ splideImageList: Array});
+const props = defineProps({
+  splideImageList: Array,
+  type: String,
+});
 const emit = defineEmits(['handleSelectImage'])
 const mixSplideImageList = ref(props.splideImageList)
 const options = {
@@ -45,7 +48,7 @@ const { id } = route.query;
 const handleFileUpload = ({file}) => {
   const params = {
     mainId: id,
-    type: "LINE",
+    type: props.type,
     category: "SELECTED",
     file: file,
   }
