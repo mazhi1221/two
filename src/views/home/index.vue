@@ -218,6 +218,9 @@ div.home {
             margin-right: 14px;
             margin-left: 14px;
           }
+          &.register {
+            color: #000;
+          }
           &.active {
             background: #860AB8;
           }

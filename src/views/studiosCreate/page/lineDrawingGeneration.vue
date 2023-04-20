@@ -24,9 +24,7 @@
           :show-file-list="false"
           :http-request="handleFileUpload"
         >
-          <el-button type="primary">
-            <el-icon><Upload /></el-icon>
-          </el-button>
+          <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
         </el-upload>
         <el-button
           class="edit-image"
@@ -47,14 +45,26 @@
     </div>
     <div class="generatePicture" >
       <ul class="themeColor">
-        <li v-for="(item, index) in structureImageList" @click="selectStructure(item, index)">
-          <div class="imgBox">
-            <img :src="item.content.url" alt="">
-          </div>
-          <p :class="{active: structureValue === structureList[index].value}">
-            {{ structureList[index].name }}
-          </p>
-        </li>
+        <template v-if="structureImageList.length">
+          <li v-for="(item, index) in structureImageList" @click="selectStructure(item, index)">
+            <div class="imgBox">
+              <img :src="item.content.url" alt="">
+            </div>
+            <p :class="{active: structureValue === structureList[index].value}">
+              {{ structureList[index].name }}
+            </p>
+          </li>
+        </template>
+        <template v-else>
+          <li v-for="(item, index) in structureList">
+            <div class="imgBox noImaBox">
+              <span class="iconfont icon-tupian1"></span>
+            </div>
+            <p>
+              {{ item.name }}
+            </p>
+          </li>
+        </template>
       </ul>
       <masonry-image
         class="masonry-image"
@@ -73,7 +83,7 @@
 import { getHistoryPrompt, getHistoryImage, getStudioProjectID, getStudioProjectResult, uploadStudioImage, getStructureStudioProject } from "../../../api/project";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import SplideImage from "@/components/splideImage/index.vue";
-import { Eleme, Upload, Edit } from '@element-plus/icons-vue'
+import { Eleme, Plus, Edit } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useRoute } from 'vue-router';
 import { ref, defineEmits } from 'vue';
@@ -259,32 +269,56 @@ div.lineDrawingGeneration {
       border-radius: 20px;
       background: rgba(0 ,0 ,0, 0.1);
       position: relative;
-      &:hover {
-        .avatar-uploader, .edit-image {
-          opacity: 1;
-        }
-      }
       .el-image {
         width: 100%;
         height: 100%;
         display: block;
         border-radius: 20px;
       }
+      &:hover {
+        .avatar-uploader, .edit-image {
+          opacity: 1;
+        }
+      }
       .avatar-uploader {
-        position: absolute;
-        right: 5px;
-        bottom: 5px;
         opacity: 0;
-        transition: opacity .35s linear;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 10;
+        ::v-deep .el-upload {
+          width: 40%;
+          height: 40%;
+          border: 1px dashed var(--el-border-color);
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          transition: var(--el-transition-duration-fast);
+          &:hover {
+            border-color: var(--el-color-primary);
+          }
+          .el-icon.avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            text-align: center;
+          }
+        }
       }
       .edit-image {
         position: absolute;
-        right: 48px;
+        right: 5px;
         bottom: 5px;
+        z-index: 20;
         opacity: 0;
         transition: opacity .35s linear;
-      }
-      .el-button{
         width: 32px;
         height: 32px;
         line-height: 32px;
@@ -332,6 +366,15 @@ div.lineDrawingGeneration {
           img {
             display: block;
             width: 100%;
+          }
+          &.noImaBox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            span {
+              font-size: 120px;
+              color: #7b0daf;
+            }
           }
         }
         p {
