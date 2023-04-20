@@ -165,8 +165,8 @@ const handleFileUpload = ({file}) => {
 //上传画风
 const handleFileUploadType = ({file}) => {
   const params = { file: file };
-  addMyStyle(params).then(res => {
-    console.log(res);
+  addMyStyle(params).then(async (res) => {
+    paintingStyleList = await getMyStyle();
   })
 }
 </script>
