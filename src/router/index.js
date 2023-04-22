@@ -7,12 +7,25 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/home/homeView'
     },
     {
       path: '/home',
       name: 'home',
       component: () => import('/src/views/home/index.vue'),
+      redirect: '/home/homeView',
+      children: [
+        {
+          path: 'homeView',
+          name: 'homeView',
+          component: () => import('/src/views/home/page/homeView.vue'),
+        },
+        {
+          path: 'fashionTrend',
+          name: 'fashionTrend',
+          component: () => import('/src/views/home/page/fashionTrend.vue'),
+        }
+      ]
     },
     {
       path: '/studiosCreate',

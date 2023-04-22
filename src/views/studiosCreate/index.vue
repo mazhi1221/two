@@ -1,18 +1,11 @@
 <template>
   <div class="drawerHome">
-    <div class="header">
-      <div class="left">
-        <span class="iconfont icon-shouye" @click="dumpHome"></span>
+    <my-header>
+      <template #extraLeft>
         <span class="pageName">{{ activeMenu }}</span>
         <span class="projectName">{{ name}}</span>
-      </div>
-      <div class="right">
-        <el-badge :value="0" class="item">
-          <span class="iconfont icon-xiaoxi"></span>
-        </el-badge>
-        <avatar/>
-      </div>
-    </div>
+      </template>
+    </my-header>
     <div class="content">
       <div
         :class="['leftMenu', {collapseMenu: !isCollapse}]"
@@ -47,11 +40,12 @@
   </div>
 </template>
 <script setup>
+import MyHeader from "./page/header.vue"
 import DesigningScheme from './page/designingScheme.vue'
 import LineDrawingGeneration  from './page/lineDrawingGeneration.vue'
 import DesignInspiration  from './page/designInspiration.vue'
 import EditImageDialog from './components/editImageDialog.vue'
-import Avatar from "@/components/avatar/index.vue";
+
 import { useUserStore } from "../../stores/user";
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
@@ -83,63 +77,22 @@ const handleEditImage = (item) => {
   editImageDialogVisible.value = true;
 }
 
-const router = useRouter();
-const dumpHome = () => {
-  router.push({
-    name: 'home',
-  })
-}
 </script>
 <style lang="scss" scoped>
 div.drawerHome {
   width: 100%;
   height: 100%;
   background: #292929;
-  >div.header {
-    width: 100%;
-    height: 83px;
-    padding: 0 32px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #2F2E2E;
-    >div.left {
-      height: 100%;
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      span.iconfont {
-        font-size: 18px;
-        font-weight: 500;
-        color: #FFFFFF;
-        margin-right: 5px;
-        cursor: pointer;
-      }
-      span.pageName {
-        font-size: 18px;
-        font-weight: 500;
-        color: #FFFFFF;
-        margin-right: 20px;
-      }
-      span.projectName {
-        font-size: 14px;
-        font-weight: 500;
-        color: #FFFFFF;
-      }
-    }
-    >div.right {
-      height: 100%;
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      span.iconfont {
-        font-size: 18px;
-        font-weight: 500;
-        color: #FFFFFF;
-        margin-right: 5px;
-      }
-    }
+  span.pageName {
+    font-size: 18px;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin-right: 20px;
+  }
+  span.projectName {
+    font-size: 14px;
+    font-weight: 500;
+    color: #FFFFFF;
   }
   >div.content {
     width: 100%;

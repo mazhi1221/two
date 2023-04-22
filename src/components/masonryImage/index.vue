@@ -7,7 +7,7 @@
           :style="imgStyle"
           @click="selectImage(item)"
         >
-        <p v-if="showInfo">
+        <p v-if="showInfo" :style="{ width: imgStyle.width }">
           <span>{{ item.name}}</span>
           <span>{{ item.createTime.substr(0, 10) }}</span>
         </p>
@@ -40,7 +40,6 @@ div.masonryImage {
     cursor: pointer;
   }
   p {
-    width: 100%;
     height: 20px;
     line-height: 20px;
     padding-right: 10px;
@@ -49,6 +48,9 @@ div.masonryImage {
     display: flex;
     justify-content: space-between;
     color: #fff;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 }
 </style>

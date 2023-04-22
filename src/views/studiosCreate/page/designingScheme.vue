@@ -106,7 +106,8 @@ const selectImage = (item) => {
     ElMessage({ message: '描述信息不能为空.', type: 'warning' })
     return;
   }
-  const { id: imageId, url } = item.content;
+  const { id: imageId } = item;
+  const { url } = item.content;
   focusImageUrl = url;
   selectedImageList.push(url);
   const params = {
