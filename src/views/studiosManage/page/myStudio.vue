@@ -53,8 +53,16 @@ const selectImage = (item) => {
 </script>
 <style lang="scss" scoped>
 div.myStudio {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   div.extraContain {
     margin-bottom: 20px;
+  }
+  div.masonry-image {
+    overflow: auto;
+    flex: 1;
   }
 }
 </style>
