@@ -1,8 +1,8 @@
 @font-face {
     font-family: "iconfont"; /* Project id 4004928 */
-    src: url('//at.alicdn.com/t/c/font_4004928_p336aprn8es.woff2?t=1682006286266') format('woff2'),
-    url('//at.alicdn.com/t/c/font_4004928_p336aprn8es.woff?t=1682006286266') format('woff'),
-    url('//at.alicdn.com/t/c/font_4004928_p336aprn8es.ttf?t=1682006286266') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_4004928_pxpqbsj2b6m.woff2?t=1682353109180') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4004928_pxpqbsj2b6m.woff?t=1682353109180') format('woff'),
+    url('//at.alicdn.com/t/c/font_4004928_pxpqbsj2b6m.ttf?t=1682353109180') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-tupian2:before {
+    content: "\e62a";
+}
+
+.icon-dianzan:before {
+    content: "\e656";
+}
+
+.icon-redian:before {
+    content: "\e6be";
+}
+
+.icon-fasong:before {
+    content: "\e62b";
+}
+
+.icon-aixin_shixin:before {
+    content: "\eca1";
+}
+
+.icon-caidan_14:before {
+    content: "\e769";
 }
 
 .icon-tupian1:before {

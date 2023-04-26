@@ -5,9 +5,30 @@
       :model-value="dialogVisible"
       :before-close="handleCloseDialog"
     >
+      <div class="header">
+        <div class="header_title">为什么黑色总是吸引消费者的注意？</div>
+        <div class="header_num">
+          <div>
+            <span class="iconfont icon-a-shoucang1"></span>
+            <span>14</span>
+          </div>
+          <div>
+            <span class="iconfont icon-redian"></span>
+            <span>238</span>
+          </div>
+          <div>
+            <span class="iconfont icon-dianzan"></span>
+            <span>2318</span>
+          </div>
+          <div>
+            <span class="iconfont icon-aixin_shixin"></span>
+            <span>388</span>
+          </div>
+        </div>
+      </div>
       <ul class="content">
         <li>
-          <img :src="detailDialogData.content.url" alt="">
+          <el-image :src="detailDialogData.content.url" fit="cover" />
         </li>
         <li>
           <div class="author">
@@ -27,16 +48,13 @@
             </ul>
           </div>
           <div class="operate">
-            <div class="num">
-              <span class="iconfont icon-daohangshoucangyishoucang"></span>
-              <span>25</span>
+            <div class="addComment">
+              <span>添加评论……</span>
             </div>
-            <div class="num">
-              <span class="iconfont icon-24gf-bookmarks"></span>
-              <span>14</span>
-            </div>
-            <div class="btn" @click="selectImage">
-              <span>编辑</span>
+            <div class="createBtn">
+              <span class="iconfont icon-tupian2"></span>
+              <span class="iconfont icon-fasong"></span>
+              <div>创作</div>
             </div>
           </div>
         </li>
@@ -81,25 +99,53 @@ div.studioDetail {
         top: 0;
         right: -15px;
       }
+      div.header {
+        height: 92px;
+        padding: 0 30px;
+        box-sizing: border-box;
+        margin-bottom: 24px;
+        border-radius: 20px;
+        background: #6D6A6A;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        >div.header_title {
+          font-size: 24px;
+          font-weight: 900;
+          color: #FFFFFF;
+        }
+        >div.header_num {
+          width: 400px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          span {
+            font-size: 16px;
+            color: #fff;
+          }
+        }
+      }
       ul.content {
         width: 994px;
-        height: 621px;
+        height: 505px;
         margin-left: 33px;
         display: flex;
         justify-content: space-between;
         >li:first-child {
           width: 482px;
-          height: 621px;
+          height: 505px;
           border-radius: 30px;
           display: flex;
           align-items: center;
-          img {
+          .el-image {
             width: 100%;
+            height: 100%;
+            border-radius: 20px;
           }
         }
         >li:last-child {
           width: 482px;
-          height: 621px;
+          height: 505px;
           div.author {
             height: 65px;
             padding: 0 0 23px;
@@ -148,28 +194,28 @@ div.studioDetail {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            div.num {
-              span {
-                font-size: 22px;
-                font-weight: 500;
-                line-height: 35px;
-                color: #fff;
-                &:first-child {
-                  margin-right: 30px;
-                }
-              }
-            }
-            div.btn {
-              width: 117px;
-              height: 45px;
-              line-height: 45px;
-              text-align: center;
-              border-radius: 20px;
-              background: #860AB8;
-              font-size: 22px;
-              font-weight: 500;
+            >div.addComment {
+              font-size: 16px;
+              font-weight: 900;
               color: #fff;
-              cursor: pointer;
+            }
+            >div.createBtn {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              span {
+                color: #fff;
+                margin-right: 20px;
+              }
+              div {
+                width: 91px;
+                height: 35px;
+                line-height: 35px;
+                text-align: center;
+                border-radius: 20px;
+                background: #7b0caf;
+                color: #fff;
+              }
             }
           }
         }
