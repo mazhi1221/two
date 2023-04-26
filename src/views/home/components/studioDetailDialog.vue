@@ -42,8 +42,32 @@
           <div class="comment">
             <ul class="comment_inner">
               <li>
-                <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-                <span>这幅图片是我精心制作表达对黑色外套的设计</span>
+                <div class="message_">
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                  <span>这幅图片是我精心制作表达对黑色外套的设计</span>
+                </div>
+                <div class="operate_">
+                  <div class="left">
+                    <span>回复</span>
+                  </div>
+                  <div class="right">
+                    <span>查看/收起回复</span>
+                  </div>
+                </div>
+                <ul class="son_comment_inner">
+                  <li>
+                    <div>
+                      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                      <span>这幅图片是我精心制作表达对黑色外套的设计</span>
+                    </div>
+                    <div class="a">
+                      <img src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/IMG_0721.PNG" alt="">
+                    </div>
+                    <div class="a">
+                      <span>回复</span>
+                    </div>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -54,7 +78,7 @@
             <div class="createBtn">
               <span class="iconfont icon-tupian2"></span>
               <span class="iconfont icon-fasong"></span>
-              <div>创作</div>
+              <div @click="selectImage">创作</div>
             </div>
           </div>
         </li>
@@ -175,16 +199,49 @@ div.studioDetail {
           div.comment {
             height: calc(100% - 110px);
             overflow: hidden;
-            ul {
+            >ul.comment_inner {
               margin-top: 30px;
-              li {
-                display: flex;
-                align-items: center;
-                .el-avatar {
-                  margin-right: 20px;
+              >li {
+                div.message_ {
+                  display: flex;
+                  align-items: center;
+                  .el-avatar {
+                    margin-right: 20px;
+                  }
+                  span {
+                    color: #fff;
+                  }
                 }
-                span {
-                  color: #fff;
+                div.operate_ {
+                  display: flex;
+                  justify-content: space-between;
+                  margin-bottom: 10px;
+                  span {
+                    color: #fff;
+                  }
+                }
+                ul.son_comment_inner {
+                  padding-left: 20px;
+                  box-sizing: border-box;
+                  li {
+                    div {
+                      display: flex;
+                      align-items: center;
+                      &.a {
+                        padding-left: 60px;
+                        box-sizing: border-box;
+                      }
+                      .el-avatar {
+                        margin-right: 20px;
+                      }
+                      span {
+                        color: #fff;
+                      }
+                      img {
+                        width: 200px;
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -215,6 +272,7 @@ div.studioDetail {
                 border-radius: 20px;
                 background: #7b0caf;
                 color: #fff;
+                cursor: pointer;
               }
             }
           }

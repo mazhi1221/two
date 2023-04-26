@@ -58,7 +58,7 @@
         <template v-else>
           <li v-for="(item, index) in structureList">
             <div class="imgBox noImaBox">
-              <span class="iconfont icon-tupian1"></span>
+<!--              <span class="iconfont icon-tupian1"></span>-->
             </div>
             <p>
               {{ item.name }}
