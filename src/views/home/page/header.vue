@@ -28,7 +28,10 @@
         :class="[{ active: activeBtn === 'fashionTrend'}]"
         @click="dumpImage('fashionTrend')">流行趋势
       </div>
-      <div class="feature">风格学习</div>
+      <div
+        class="feature"
+        :class="[{ active: activeBtn === 'styleLearning'}]"
+        @click="dumpImage('studiosManage')">风格学习</div>
       <avatar v-if="userStore.token"/>
       <template v-else>
         <div class="btn login active" @click="loginBtnClick">登陆</div>
