@@ -1,8 +1,8 @@
 @font-face {
     font-family: "iconfont"; /* Project id 4004928 */
-    src: url('//at.alicdn.com/t/c/font_4004928_pxpqbsj2b6m.woff2?t=1682353109180') format('woff2'),
-    url('//at.alicdn.com/t/c/font_4004928_pxpqbsj2b6m.woff?t=1682353109180') format('woff'),
-    url('//at.alicdn.com/t/c/font_4004928_pxpqbsj2b6m.ttf?t=1682353109180') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_4004928_yujl30odo7.woff2?t=1682783657338') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4004928_yujl30odo7.woff?t=1682783657338') format('woff'),
+    url('//at.alicdn.com/t/c/font_4004928_yujl30odo7.ttf?t=1682783657338') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,34 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xingzhuang-juxing:before {
+    content: "\eb97";
+}
+
+.icon-xingzhuang-wenzi:before {
+    content: "\eb99";
+}
+
+.icon-xingzhuang-tuoyuanxing:before {
+    content: "\eb9a";
+}
+
+.icon-xingzhuang-sanjiaoxing:before {
+    content: "\eb9b";
+}
+
+.icon-xingzhuang-xingxing:before {
+    content: "\eb9c";
+}
+
+.icon-yuanjiaojuxing:before {
+    content: "\edf8";
+}
+
+.icon-line:before {
+    content: "\e6bb";
 }
 
 .icon-tupian2:before {

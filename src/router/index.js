@@ -7,7 +7,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/home/homeView'
+      redirect: '/home/homeView',
+      // redirect: '/drawingBoard',
     },
     {
       path: '/home',
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/studiosManage',
       name: 'studiosManage',
       component: () => import('/src/views/studiosManage/index.vue'),
+    },
+    {
+      path: '/drawingBoard',
+      name: 'drawingBoard',
+      component: () => import('/src/views/drawingBoard/index.vue'),
     }
   ],
 })

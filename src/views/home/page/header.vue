@@ -6,16 +6,10 @@
         :class="['btn', { active: activeBtn === 'homeView'}]"
         @click="dumpImage('homeView')">主页
       </div>
-      <el-dropdown>
-        <div class="btn">口袋</div>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>创建新口袋</el-dropdown-item>
-            <el-dropdown-item @click="dumpMyStudio">我的口袋</el-dropdown-item>
-            <el-dropdown-item>学习我的画风</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <div
+        :class="['btn', { active: activeBtn === 'fashionTrend'}]"
+        @click="dumpImage('fashionTrend')">流行趋势
+      </div>
       <div class="search">
         <img src="../../../assets/img/home_paint.svg" alt="">
         <input type="text" v-model="prompt">
@@ -23,15 +17,6 @@
       </div>
     </div>
     <div class="right">
-      <div
-        class="feature"
-        :class="[{ active: activeBtn === 'fashionTrend'}]"
-        @click="dumpImage('fashionTrend')">流行趋势
-      </div>
-      <div
-        class="feature"
-        :class="[{ active: activeBtn === 'styleLearning'}]"
-        @click="dumpImage('studiosManage')">风格学习</div>
       <avatar v-if="userStore.token"/>
       <template v-else>
         <div class="btn login active" @click="loginBtnClick">登陆</div>
@@ -92,9 +77,11 @@ const loginBtnClick = () => {
 </script>
 <style lang="scss" scoped>
 div.header {
-  width: calc(100% - 40px);
-  height: 58px;
-  margin: 20px 20px 0;
+  width: 100% ;
+  height: 80px;
+  background: #f9f9f9;
+  padding: 0 20px;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -106,13 +93,10 @@ div.header {
     img:first-child {
       width: 110px;
       height: 32px;
-      margin-right: 15px;
+      margin-right: 32px;
     }
     div.btn {
-      width: 66px;
-      height: 32px;
-      line-height: 32px;
-      text-align: center;
+      padding: 0 10px;
       border-radius: 20px;
       margin-right: 20px;
       font-size: 20px;
@@ -120,43 +104,45 @@ div.header {
       color: #4D4D4D;
       cursor: pointer;
       &.active {
-        background: #fff;
+        background: #ccc;
       }
     }
     div.search {
       flex: 1;
-      height: 58px;
+      height: 43px;
       border-radius: 20px;
-      background: #FFFFFF;
+      background: #dcd9d9;
       position: relative;
       img {
         width: 25px;
         height: 25px;
+        margin-right: 0;
         position: absolute;
-        top: 16px;
-        left: 15px;
+        top: 8px;
+        left: 10px;
       }
       input {
-        width: calc(100% - 40px - 100px);
+        width: calc(100% - 40px - 140px);
         height: 100%;
         padding: 0 10px;
         box-sizing: border-box;
         outline-style: none;
+        background: #dcd9d9;
         margin-left: 40px;
         border: none;
         font-size: 14px;
         color: #9C9A9A;
       }
       div.create {
-        position: absolute;
-        top: 9px;
-        right: 15px;
-        width: 85px;
-        height: 40px;
-        line-height: 40px;
+        width: 125px;
+        height: 30px;
+        line-height: 30px;
         text-align: center;
         border-radius: 20px;
         background: #860AB8;
+        position: absolute;
+        top: 7px;
+        right: 15px;
         font-size: 12px;
         font-weight: 900;
         color: #FFFFFF;
@@ -168,21 +154,6 @@ div.header {
     display: flex;
     justify-content: start;
     align-items: center;
-    div.feature {
-      width: 110px;
-      height: 32px;
-      line-height: 32px;
-      text-align: center;
-      border-radius: 20px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #4D4D4D;
-      margin-left: 20px;
-      cursor: pointer;
-      &.active {
-        background: #fff;
-      }
-    }
     div.btn {
       width: 58px;
       height: 32px;
