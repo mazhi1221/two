@@ -1,32 +1,26 @@
 <template>
   <div class="homeView">
-    <div class="filterArea">
-      <div class="authorGroup">
-        <el-space :size="20">
-          <el-badge :value="15" class="item" type="primary">
-            <el-avatar src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/IMG_0721.PNG"/>
-          </el-badge>
-          <el-badge :value="56" class="item" type="primary">
-            <el-avatar src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/IMG_0722.PNG"/>
-          </el-badge>
-          <el-badge :value="20" class="item" type="primary">
-            <el-avatar src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/IMG_0723.PNG"/>
-          </el-badge>
-        </el-space>
-      </div>
-      <div class="tagGroup">
-        <el-space :size="10">
-          <div class="tag active">设计</div>
-          <div class="tag">时装</div>
-          <div class="tag">室内</div>
-          <div class="tag">动漫</div>
-        </el-space>
-      </div>
-    </div>
+    <Splide
+      v-if="studioList.length"
+      :options="options"
+      class="slideArea"
+    >
+      <SplideSlide
+        v-for="(item, index) in studioList.slice(0, 3)"
+        :key="index"
+      >
+        <p>为什么黑色总是吸引消费者的注意</p>
+        <img
+          :src="item.content.url"
+          :key="index"
+          @click="detailBtnClick(item)"
+        >
+      </SplideSlide>
+    </Splide>
     <div class="contentArea">
       <masonry-image
         class="masonry-image"
-        :imageBlocks="studioList"
+        :imageBlocks="studioList.slice(3, studioList.length)"
         :imgStyle="{
           width: '350px',
           'margin-right': '10px',
@@ -43,12 +37,23 @@
   </div>
 </template>
 <script setup>
+import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import StudioDetail from "../components/studioDetailDialog.vue";
 import MasonryImage from "@/components/masonryImage/index.vue";
 import { ref, onMounted } from 'vue';
 import { getStudioList } from "@/api/home";
 import { useUserStore } from "@/stores/user";
 import { useRouter } from 'vue-router';
+
+const options = {
+  type: 'loop',
+  height: '528px',
+  autoWidth: true,
+  gap: "20px",
+  focus  : 'center',
+  rewind : true,
+  // autoplay: true,
+}
 
 //瀑布流相关
 let studioList = $ref([]);
@@ -64,48 +69,45 @@ const userStore = useUserStore();
 let detailDialogVisible = ref(false);
 let detailDialogData = ref({});
 const detailBtnClick = (item) => {
-  // if (!userStore.token) {
-  //   loginBtnClick();
-  //   return;
-  // }
   detailDialogData = item;
   detailDialogVisible.value = true;
 }
 </script>
 <style lang="scss" scoped>
 div.homeView {
-  width: 1440px;
-  margin: 0 auto;
-  margin-top: 20px;
-  div.filterArea {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    div.authorGroup {
-      .el-avatar {
-        cursor: pointer;
+  width: 100%;
+  overflow-x: hidden;
+  div.slideArea {
+    margin: 0 20px 60px;
+    ::v-deep {
+      .splide__arrows {
+        position: absolute;
+        top: 0; bottom: 0;
+        left: 0;right: 0;
+        margin: auto;
       }
-    }
-    div.tagGroup {
-      div.tag {
-        width: 51px;
-        height: 25px;
-        line-height: 25px;
-        text-align: center;
-        border-radius: 20px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #3D3D3D;
-        cursor: pointer;
-        &.active {
-          background: #A19D9D;
-          color: #FFFFFF;
+      .splide__list {
+        .splide__slide {
+          cursor: pointer;
+          border-radius: 20px;
+          overflow: hidden;
+          position: relative;
+          p {
+            color: #7b0daf;
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            z-index: 10;
+          }
         }
       }
     }
   }
   div.contentArea {
-    margin-top: 20px;
+    width: 1440px;
+    margin: 0 auto;
   }
 }
 </style>
