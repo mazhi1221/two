@@ -16,7 +16,7 @@ div.home {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 10;
   }
   div.viewComponents {
     margin-top: 130px;

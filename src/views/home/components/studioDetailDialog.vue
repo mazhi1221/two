@@ -5,32 +5,14 @@
       :model-value="dialogVisible"
       :before-close="handleCloseDialog"
     >
-      <div class="header">
-        <div class="header_title">为什么黑色总是吸引消费者的注意？</div>
-        <div class="header_num">
-          <div>
-            <span class="iconfont icon-a-shoucang1"></span>
-            <span>14</span>
-          </div>
-          <div>
-            <span class="iconfont icon-redian"></span>
-            <span>238</span>
-          </div>
-          <div>
-            <span class="iconfont icon-dianzan"></span>
-            <span>2318</span>
-          </div>
-          <div>
-            <span class="iconfont icon-aixin_shixin"></span>
-            <span>388</span>
-          </div>
-        </div>
-      </div>
       <ul class="content">
         <li>
           <el-image :src="detailDialogData.content.url" fit="cover" />
         </li>
         <li>
+          <div class="description">
+            黑色将成为席卷核心及时尚单品的关键色彩，采用包括黑色调与法式海军蓝在内的核心色调搭配神秘的鸭青色与午夜粽，结合不同肌理及光泽的材质，在丰富视觉层次的同时易于搭配。另外，全黑色造型及暗色的印花值得关注。棕色系作为该调色盘的底色，顺应复古美学。智能蓝与橙色的组合可用于日常搭配，小面积的酸橙色色块可用于造型点缀，也可以考虑运用在印花中。该色盘尤其适用于年轻与运动市场。
+          </div>
           <div class="author">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
             <span class="authorName">stephenlee</span>
@@ -61,7 +43,7 @@
                       <span>这幅图片是我精心制作表达对黑色外套的设计</span>
                     </div>
                     <div class="a">
-                      <img src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/IMG_0721.PNG" alt="">
+                      <img class="big" src="http://bucket-bangxiehui-1.oss-cn-beijing.aliyuncs.com/assets/IMG_0721.PNG" alt="">
                     </div>
                     <div class="a">
                       <span>回复</span>
@@ -123,41 +105,15 @@ div.studioDetail {
         top: 0;
         right: -15px;
       }
-      div.header {
-        height: 92px;
-        padding: 0 30px;
-        box-sizing: border-box;
-        margin-bottom: 24px;
-        border-radius: 20px;
-        background: #6D6A6A;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        >div.header_title {
-          font-size: 24px;
-          font-weight: 900;
-          color: #FFFFFF;
-        }
-        >div.header_num {
-          width: 400px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          span {
-            font-size: 16px;
-            color: #fff;
-          }
-        }
-      }
       ul.content {
         width: 994px;
-        height: 505px;
+        height: 615px;
         margin-left: 33px;
         display: flex;
         justify-content: space-between;
         >li:first-child {
           width: 482px;
-          height: 505px;
+          height: 100%;
           border-radius: 30px;
           display: flex;
           align-items: center;
@@ -169,7 +125,12 @@ div.studioDetail {
         }
         >li:last-child {
           width: 482px;
-          height: 505px;
+          height: 100%;
+          div.description {
+            font-size: 16px;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+          }
           div.author {
             height: 65px;
             padding: 0 0 23px;
@@ -197,7 +158,7 @@ div.studioDetail {
             }
           }
           div.comment {
-            height: calc(100% - 110px);
+            height: calc(100% - 305px);
             overflow: hidden;
             >ul.comment_inner {
               margin-top: 30px;
@@ -237,8 +198,9 @@ div.studioDetail {
                       span {
                         color: #fff;
                       }
-                      img {
-                        width: 200px;
+                      img.big {
+                        width: 100px;
+                        height: 100px;
                       }
                     }
                   }
