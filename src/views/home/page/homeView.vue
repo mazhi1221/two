@@ -50,7 +50,7 @@ const options = {
   height: '528px',
   autoWidth: true,
   gap: "20px",
-  focus  : 'center',
+  // focus  : 'center',
   rewind : true,
   // autoplay: true,
 }
