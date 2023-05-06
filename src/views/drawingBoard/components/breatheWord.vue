@@ -1,14 +1,12 @@
 <template>
   <div class="breatheWord">
-    <h1 class="boujee-text">如何实现五彩斑斓的“呼吸字”？</h1>
+    <div class="boujee-text">
+      <slot></slot>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
-* {
-  box-sizing: border-box;
-}
-
-body {
+.breatheWord {
   display: grid;
   place-items: center;
   min-height: 100vh;
@@ -18,7 +16,7 @@ body {
   --bg-size: 400%;
   --color-one: hsl(15 90% 55%);
   --color-two: hsl(40 95% 55%);
-  font-size: clamp(3rem, 25vmin, 8rem);
+  font-size: clamp(3rem, 20vmin, 8rem);
   background: linear-gradient(
       90deg,
       var(--color-one),

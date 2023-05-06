@@ -25,31 +25,28 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
 import StudioTrendDetail from "./studioTrendDetailDialog.vue"
+import { defineProps } from 'vue';
 
 const props = defineProps({ data: Array})
 
 let detailDialogVisible = ref(false);
 let detailDialogData = ref({});
-const router = useRouter();
 const detailBtnClick = (item) => {
   detailDialogData = item;
   detailDialogVisible.value = true;
 }
-
 </script>
 <style lang="scss" scoped>
 div.trendInfo {
   div.title {
     font-size: 24px;
     font-weight: bold;
-    color: #3D3D3D;
-    margin-bottom: 40px;
+    color: #ffffff;
+    margin-bottom: 20px;
   }
   div.trendInfoInner0 {
-    margin-bottom: 70px;
+    margin-bottom: 200px;
     ul.content {
       height: 950px;
       position: relative;
@@ -66,10 +63,10 @@ div.trendInfo {
           bottom: 0; left: 0;
         }
         &:nth-child(3) {
-          position: absolute;
-          top: 0; left: 365px;
           width: 710px;
           height: 920px;
+          position: absolute;
+          top: 0; left: 365px;
           .el-image {
             width: 100%;
             height: 899px;
@@ -78,7 +75,7 @@ div.trendInfo {
           p.title {
             text-align: center;
             font-size: 30px;
-            color: #3D3D3D;
+            color: #ffffff;
           }
         }
         &:nth-child(4) {
@@ -97,7 +94,7 @@ div.trendInfo {
         p.title {
           font-size: 16px;
           font-weight: bold;
-          color: #3D3D3D;
+          color: #ffffff;
           width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -106,7 +103,7 @@ div.trendInfo {
         p.description {
           width: 100%;
           font-size: 16px;
-          color: #3D3D3D;
+          color: #ffffff;
           opacity: 0.6;
           display: -webkit-box;
           text-overflow: ellipsis;
@@ -118,7 +115,6 @@ div.trendInfo {
     }
   }
   div.trendInfoInner1 {
-    margin-bottom: 70px;
     ul.content {
       height: 856px;
       display: flex;
@@ -137,7 +133,7 @@ div.trendInfo {
           width: 100%;
           font-size: 16px;
           font-weight: bold;
-          color: #3D3D3D;
+          color: #ffffff;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

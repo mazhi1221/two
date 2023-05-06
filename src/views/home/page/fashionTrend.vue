@@ -49,18 +49,19 @@ const officialDocuments = [
 <style lang="scss" scoped>
 div.fashionTrend {
   width: 100%;
-  overflow-x: hidden;
+  padding-top: 120px;
+  padding-bottom: 120px;
   div.fashionTrendContain {
     width: 1440px;
     margin: 0 auto;
-    div.category {
+    >div.category {
       display: flex;
       justify-content: center;
       margin-bottom: 64px;
       div.tag {
         span.title {
           cursor: pointer;
-          color: #000000;
+          color: #ffffff;
           font-size: 18px;
           font-weight: bold;
         }
@@ -71,7 +72,7 @@ div.fashionTrend {
         }
       }
     }
-    div.content {
+    >div.content {
 
     }
   }

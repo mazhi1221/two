@@ -2,6 +2,7 @@
   <div class="drawingBoard">
     <div class="toolArea">
       <div class="toolAreaInner">
+        <breathe-word>我的画板</breathe-word>
         <div class="feature">
           <div class="title">形状</div>
           <ul class="paintShape">
@@ -52,6 +53,7 @@
   </div>
 </template>
 <script setup>
+import BreatheWord from "./components/breatheWord.vue"
 import { nextTick } from 'vue';
 
 let paintShape = $ref("绘画");
