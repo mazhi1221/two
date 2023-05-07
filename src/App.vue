@@ -1,17 +1,13 @@
 <template>
   <div class="baseViews">
-    <router-view v-slot="{ Component }">
-      <keep-alive include="designingScheme, lineDrawingGeneration, designInspiration">
-        <component :is="Component" />
-      </keep-alive>
-    </router-view>
+    <router-view></router-view>
   </div>
 </template>
 <script setup>
 </script>
 <style lang="scss" scoped>
 div.baseViews {
-  width: 100%;
+  min-width: 1440px;
   height: 100%;
 }
 </style>

@@ -156,6 +156,7 @@ div.login {
             }
             &.weChatLogin {
               background: #fff;
+              color: #000;
             }
             &.login {
               background: #860AB8;

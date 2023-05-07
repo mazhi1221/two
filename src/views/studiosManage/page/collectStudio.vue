@@ -9,14 +9,14 @@
     </div>
     <el-empty description="description" />
 
-    <div class="gridTest">
-      <div class="item" v-for="i in 10">
-        <span>{{i}}</span>
-      </div>
-    </div>
+<!--    <div class="gridTest">-->
+<!--      <div class="item" v-for="i in 10">-->
+<!--        <span>{{i}}</span>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
-<script setup>
+<script setup name="collectStudio">
 import TagGroup from "@/components/tagGroup/index.vue"
 
 const tagValue = "untitledStudio"

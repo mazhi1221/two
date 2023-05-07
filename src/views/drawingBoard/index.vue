@@ -2,7 +2,7 @@
   <div class="drawingBoard">
     <div class="toolArea">
       <div class="toolAreaInner">
-        <breathe-word>我的画板</breathe-word>
+<!--        <breathe-word>我的画板</breathe-word>-->
         <div class="feature">
           <div class="title">形状</div>
           <ul class="paintShape">

@@ -7,21 +7,29 @@
         <input type="text" v-model="prompt">
         <div class="create" @click="createBtnClick">创造</div>
       </div>
+      <p class="columns">
+        <span>Columns: {{ columns }}</span>
+      </p>
+      <el-slider
+        v-model="columns"
+        size="small"
+        :step="1"
+        :min="4"
+        :max="12"
+        :show-tooltip="false"
+        @input="handleChangeColumns"
+      />
       <create-project-dialog
         :defaultPrompt="prompt"
         :dialogVisible="createDialogVisible"
         @handleCloseDialog="createDialogVisible = false;"
       />
     </div>
-    <div class="contentArea">
+    <div class="contentArea" id="contentArea">
       <masonry-image
         class="masonry-image"
         :imageBlocks="studioList"
-        :imgStyle="{
-          width: '350px',
-          'margin-right': '10px',
-          'margin-bottom': '10px'
-        }"
+        :imgStyle="{ width: perWidth + 'px' }"
         @selectImage="detailBtnClick"
       />
       <studio-detail
@@ -56,6 +64,22 @@ onMounted(async () => {
   })
 })
 
+let columns = $ref(6);
+let perWidth = $ref(0);
+//瀑布流图片宽度自适应
+onMounted(() => {
+  setPerWidth();
+  window.onresize = () => { setPerWidth() }
+})
+const setPerWidth = () => {
+  let totalWidth = document.getElementById("contentArea").clientWidth;
+  perWidth = totalWidth / columns;
+}
+const handleChangeColumns = () => {
+  setPerWidth();
+  studioList.push({ id: -1 })
+}
+
 //查看详情相关
 const userStore = useUserStore();
 let detailDialogVisible = ref(false);
@@ -67,10 +91,13 @@ const detailBtnClick = (item) => {
 </script>
 <style lang="scss" scoped>
 div.homeView {
+  width: 100%;
+  padding: 0 4px;
+  box-sizing: border-box;
   div.searchArea {
     width: 100%;
     height: 487px;
-    padding: 220px 0 100px;
+    padding: 180px 0 100px;
     >img {
       width: 200px;
       display: block;
@@ -120,10 +147,28 @@ div.homeView {
         cursor: pointer;
       }
     }
+    .columns {
+      margin-top: 50px;
+      text-align: center;
+      span {
+        font-size: 14px;
+      }
+    }
+    .el-slider {
+      width: 250px;
+      margin: 0 auto;
+      ::v-deep {
+        .el-slider__bar {
+          background: #7b7b7d;
+        }
+        .el-slider__runway {
+          background: #454546;
+        }
+      }
+    }
   }
   div.contentArea {
-    width: 1440px;
-    margin: 0 auto;
+    width: 100%;
   }
 }
 </style>

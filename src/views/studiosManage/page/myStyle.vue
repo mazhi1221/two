@@ -20,7 +20,7 @@
     </ul>
   </div>
 </template>
-<script setup>
+<script setup name="myStyle">
 import { addMyStyle, getMyStyle } from "@/api/project";
 
 let paintingStyleList = $ref([]);

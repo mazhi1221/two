@@ -1,10 +1,18 @@
 <template>
   <div class="masonryImage">
-    <div v-masonry  transition-duration="0.3s" item-selector=".item">
-      <div v-masonry-tile class="item" v-for="(item, index) in imageBlocks">
+    <div
+      v-masonry
+      transition-duration="0"
+      item-selector=".item">
+      <div
+        class="item"
+        :style="imgStyle"
+        v-masonry-tile
+        v-for="(item, index) in imageBlocks"
+        :key="index">
         <img
+          v-if="item.id !== -1"
           :src="item.content.url"
-          :style="imgStyle"
           @click="selectImage(item)"
         >
         <p v-if="showInfo" :style="{ width: imgStyle.width }">
@@ -28,6 +36,8 @@ const props = defineProps({
   }
 });
 
+
+
 const selectImage = (item) => {
   emit("selectImage", item);
 }
@@ -35,22 +45,27 @@ const selectImage = (item) => {
 <style lang="scss" scoped>
 div.masonryImage {
   height: 100%;
-  img {
-    border-radius: 20px;
-    cursor: pointer;
-  }
-  p {
-    height: 20px;
-    line-height: 20px;
-    padding-right: 10px;
+  div.item {
+    padding: 0 2px;
     box-sizing: border-box;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    color: #fff;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    p {
+      height: 20px;
+      line-height: 20px;
+      padding-right: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
   }
 }
 </style>

@@ -29,9 +29,9 @@
         >{{ item.name }}</li>
       </ul>
       <div class="contentArea">
-        <my-studio v-if="activeQueryType === 'MINE'"/>
-        <collect-studio v-if="activeQueryType === 'COLLECT'" />
-        <my-style v-if="activeQueryType === 'paintingStyle'" />
+        <KeepAlive>
+          <component :is="tabs[activeQueryType]"></component>
+        </KeepAlive>
       </div>
     </div>
   </div>
@@ -45,6 +45,12 @@ import { ElMessage } from 'element-plus';
 import { uploadUserAvatar } from "@/api/user";
 import { useUserStore } from "../../stores/user";
 const userStore = useUserStore();
+
+const tabs = {
+  MINE: MyStudio,
+  COLLECT: CollectStudio,
+  paintingStyle: MyStyle,
+}
 
 let activeQueryType = $ref("MINE")
 let queryTypeList = $ref([

@@ -129,6 +129,7 @@ div.createProject {
             cursor: pointer;
             &.cancel {
               background: #fff;
+              color: #000;
             }
             &.login {
               background: #860AB8;

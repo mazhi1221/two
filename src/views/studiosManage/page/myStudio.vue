@@ -12,14 +12,14 @@
       :imageBlocks="myStudiosList"
       :showInfo="true"
       :imgStyle="{
-        width: '195px',
+        width: '194px',
         'margin-right': '10px',
       }"
       @selectImage="selectImage"
     />
   </div>
 </template>
-<script setup>
+<script setup name="myStudio">
 import MasonryImage from "@/components/masonryImage/index.vue"
 import TagGroup from "@/components/tagGroup/index.vue"
 import { getMyStudioProject } from "@/api/project";
@@ -63,6 +63,7 @@ div.myStudio {
   div.masonry-image {
     overflow: auto;
     flex: 1;
+    margin-bottom: 100px;
   }
 }
 </style>

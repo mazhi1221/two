@@ -179,7 +179,7 @@ div.designingScheme {
       height: 40px;
       margin-bottom: 10px;
       border-radius: 20px;
-      background: #FFFFFF;
+      background: #343434;
       position: relative;
       img {
         width: 25px;
@@ -199,6 +199,7 @@ div.designingScheme {
         border: none;
         font-size: 14px;
         color: #9C9A9A;
+        background: #343434;
       }
       .el-button{
         position: absolute;
