@@ -1,43 +1,45 @@
 <template>
   <div class="homeView">
-    <div class="searchArea">
-      <img src="../../../assets/img/home_logo_white.png" alt="">
-      <div class="search">
-        <img src="../../../assets/img/home_paint.svg" alt="">
-        <input type="text" v-model="prompt">
-        <div class="create" @click="createBtnClick">创造</div>
+    <el-scrollbar wrap-style="overflow-x:hidden;">
+      <div class="searchArea">
+        <img src="../../../assets/img/home_logo_white.png" alt="">
+        <div class="search">
+          <img src="../../../assets/img/home_paint.svg" alt="">
+          <input type="text" v-model="prompt">
+          <div class="create" @click="createBtnClick">创造</div>
+        </div>
+        <p class="columns">
+          <span>Columns: {{ columns }}</span>
+        </p>
+        <el-slider
+          v-model="columns"
+          size="small"
+          :step="1"
+          :min="4"
+          :max="12"
+          :show-tooltip="false"
+          @input="handleChangeColumns"
+        />
+        <create-project-dialog
+          :defaultPrompt="prompt"
+          :dialogVisible="createDialogVisible"
+          @handleCloseDialog="createDialogVisible = false;"
+        />
       </div>
-      <p class="columns">
-        <span>Columns: {{ columns }}</span>
-      </p>
-      <el-slider
-        v-model="columns"
-        size="small"
-        :step="1"
-        :min="4"
-        :max="12"
-        :show-tooltip="false"
-        @input="handleChangeColumns"
-      />
-      <create-project-dialog
-        :defaultPrompt="prompt"
-        :dialogVisible="createDialogVisible"
-        @handleCloseDialog="createDialogVisible = false;"
-      />
-    </div>
-    <div class="contentArea" id="contentArea">
-      <masonry-image
-        class="masonry-image"
-        :imageBlocks="studioList"
-        :imgStyle="{ width: perWidth + 'px' }"
-        @selectImage="detailBtnClick"
-      />
-      <studio-detail
-        :dialogVisible="detailDialogVisible"
-        :detailDialogData="detailDialogData"
-        @handleCloseDialog="detailDialogVisible = false;"
-      />
-    </div>
+      <div class="contentArea" id="contentArea">
+        <masonry-image
+          class="masonry-image"
+          :imageBlocks="studioList"
+          :imgStyle="{ width: perWidth + 'px' }"
+          @selectImage="detailBtnClick"
+        />
+        <studio-detail
+          :dialogVisible="detailDialogVisible"
+          :detailDialogData="detailDialogData"
+          @handleCloseDialog="detailDialogVisible = false;"
+        />
+      </div>
+    </el-scrollbar>
   </div>
 </template>
 <script setup>
@@ -91,7 +93,8 @@ const detailBtnClick = (item) => {
 </script>
 <style lang="scss" scoped>
 div.homeView {
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   padding: 0 4px;
   box-sizing: border-box;
   div.searchArea {
