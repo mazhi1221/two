@@ -1,7 +1,7 @@
 <template>
   <div class="splideImage">
     <Splide :options="options">
-      <SplideSlide v-for="(item, index) in mixSplideImageList">
+      <SplideSlide v-for="(item, index) in mixSplideImageList" :key="index">
         <img
           :src="item"
           :key="index"

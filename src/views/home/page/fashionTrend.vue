@@ -4,16 +4,17 @@
       <div class="category">
         <el-space :size="90">
           <div
-            v-for="item in officialDocuments"
+            v-for="(item,index) in officialDocuments"
             :class="['tag', { active: officialActive === item.value }]"
             @click="officialActive = item.value"
+            :key="index"
           >
             <span class="title">{{ item.name }}</span>
           </div>
         </el-space>
       </div>
       <div class="content">
-        <trend-info
+        <Futurestrategy
           v-show="officialActive === 'futureStrategy'"
           :data="renderData.futureStrategy"
         />
@@ -21,7 +22,7 @@
           v-show="officialActive === 'marketAnalysis'"
           :data="renderData.marketAnalysis"
         />
-        <trend-info
+        <MarketAnalysis
           v-show="officialActive === 'researchDesign'"
           :data="renderData.researchDesign"
         />
@@ -35,6 +36,8 @@
 </template>
 <script setup>
 import TrendInfo from "../components/trendInfo.vue"
+import MarketAnalysis from "../components/components/MarketAnalysis.vue";
+import Futurestrategy from "../components/components/Futurestrategys.vue"
 import renderData from "./imageConfig.json";
 
 const officialActive = $ref("futureStrategy")
@@ -51,6 +54,7 @@ div.fashionTrend {
   width: 100%;
   padding-top: 120px;
   padding-bottom: 120px;
+  background: #000000;
   div.fashionTrendContain {
     width: 1440px;
     margin: 0 auto;
@@ -61,7 +65,7 @@ div.fashionTrend {
       div.tag {
         span.title {
           cursor: pointer;
-          color: #ffffff;
+          color: #fff;
           font-size: 18px;
           font-weight: bold;
         }

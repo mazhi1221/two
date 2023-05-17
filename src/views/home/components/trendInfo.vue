@@ -5,9 +5,9 @@
       :key="index"
       :class="['trendInfoInner' + index]"
     >
-      <div class="title">{{ item.type }}</div>
+          <div class="title">{{ item.type }}</div>
       <ul class="content">
-        <li v-for="(img, index_) in item.imgList" @click="detailBtnClick(img)">
+        <li v-for="(img, index_) in item.imgList" :key="index_" @click="detailBtnClick(img)">
           <el-image :src="img.url" fit="cover" />
           <p class="title">{{ img.title }}</p>
           <p
@@ -30,20 +30,25 @@ import { defineProps } from 'vue';
 
 const props = defineProps({ data: Array})
 
+
 let detailDialogVisible = ref(false);
 let detailDialogData = ref({});
 const detailBtnClick = (item) => {
   detailDialogData = item;
+  console.log(item);
+  console.log(detailDialogData);
   detailDialogVisible.value = true;
 }
 </script>
 <style lang="scss" scoped>
 div.trendInfo {
   div.title {
+    font-family: iconfont logo;
     font-size: 24px;
     font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 20px;
+    color: #3D3D3D;
+    margin: 0px 0 51px 93px;
+    letter-spacing: 0em;
   }
   div.trendInfoInner0 {
     margin-bottom: 200px;
@@ -76,6 +81,8 @@ div.trendInfo {
             text-align: center;
             font-size: 30px;
             color: #ffffff;
+    // color: #3D3D3D;
+
           }
         }
         &:nth-child(4) {
@@ -94,7 +101,9 @@ div.trendInfo {
         p.title {
           font-size: 16px;
           font-weight: bold;
-          color: #ffffff;
+          // color: #ffffff;
+    color: #3D3D3D;
+
           width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -103,7 +112,9 @@ div.trendInfo {
         p.description {
           width: 100%;
           font-size: 16px;
-          color: #ffffff;
+          // color: #ffffff;
+    color: #3D3D3D;
+
           opacity: 0.6;
           display: -webkit-box;
           text-overflow: ellipsis;
@@ -133,7 +144,9 @@ div.trendInfo {
           width: 100%;
           font-size: 16px;
           font-weight: bold;
-          color: #ffffff;
+          // color: #ffffff;
+    color: #3D3D3D;
+
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

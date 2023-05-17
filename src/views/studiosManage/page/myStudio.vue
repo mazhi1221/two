@@ -12,8 +12,8 @@
       :imageBlocks="myStudiosList"
       :showInfo="true"
       :imgStyle="{
-        width: '194px',
-        'margin-right': '10px',
+        width: '342px',
+        'margin-right': '15px',
       }"
       @selectImage="selectImage"
     />
