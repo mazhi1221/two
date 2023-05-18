@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<template>
-  <div>123456</div>
-</template>
-=======
+
 <template>
   <div class="bxo">
     <div v-for="item in 2" :key="item" class="box">
@@ -52,7 +48,6 @@ console.log(props.data[1])
     font-size: 30px;
     font-weight: bold;
     letter-spacing: 0em;
-
     color: #FFFFFF;
   }
 }
@@ -86,4 +81,3 @@ ul {
   }
 }
 </style>
->>>>>>> 19f8d25... code

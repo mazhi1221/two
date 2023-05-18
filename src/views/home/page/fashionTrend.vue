@@ -6,11 +6,7 @@
           <div
             v-for="(item,index) in officialDocuments"
             :class="['tag', { active: officialActive === item.value }]"
-<<<<<<< HEAD
             @click="officialActive = item.value"
-=======
-            @click="TitleClick(item,index) "
->>>>>>> 19f8d25... code
             :key="index"
           >
             <span class="title">{{ item.name }}</span>
@@ -40,10 +36,7 @@
 </template>
 <script setup>
 import TrendInfo from "../components/trendInfo.vue"
-<<<<<<< HEAD
 import MarketAnalysis from "../components/components/MarketAnalysis.vue";
-=======
->>>>>>> 19f8d25... code
 import Futurestrategy from "../components/components/Futurestrategys.vue"
 import renderData from "./imageConfig.json";
 
@@ -64,11 +57,7 @@ div.fashionTrend {
   width: 100%;
   padding-top: 120px;
   padding-bottom: 120px;
-<<<<<<< HEAD
-  background: #000000;
-=======
-  // background-color: white;
->>>>>>> 19f8d25... code
+  background: white;
   div.fashionTrendContain {
     width: 1440px; // 全屏
     margin: 0 auto;
@@ -81,7 +70,7 @@ div.fashionTrend {
       div.tag {
         span.title {
           cursor: pointer;
-          color: #fff;
+          color: black;
           font-size: 18px;
           font-weight: bold;
         }
